@@ -10,26 +10,39 @@ using namespace arma;
 using namespace std;
 
 // setting up classes, public and protected variables/methods
-class Finite_Difference{
+class Diffusion_Solver{
+
+protected:
+  double m_T; // time
+  double m_dt; // step size time
+  double m_dx; // step size in space
+  double m_dx2; // dx squared
+  int m_Nt; // Number of time iterations
+  int m_Nx; // number of spatial iterations
+  double m_Lx; // span of dimension 1,x in [0,Lx]
+  vec m_x; // spatial mesh
+  vec u, u_n, u_nn; // time vectors for stencil t+dt, t, t - dt
+  vec t; // time vector
+  vec Ix, It; // index sets
+
+public:
+  void initialize(double T, double dt, int Lx, double dx); // set up parameters
+
+};
+
+class Explicit_Euler: public Diffusion_Solver{
 
 protected:
 
 public:
-  void initialize(); // set initial conditions
-};
-
-class Explicit_Euler: public Finite_Difference{
-
-protected:
-
-public:
-  void init(); // if an init needed here, using initialize
-  void advance();
-  void solve();
+  void init(double T, double dt, int Lx, double dx); // Set up parameters
+  void set_initial(double I(double x)); // set up the inital condition
+  void advance(); // for all steps
+  void solve(); // solves the system in time
 
 };
 
-class Implicit: public Finite_Difference{ // making a class for implicit methods
+class Implicit: public Diffusion_Solver{ // making a class for implicit methods
 
 protected:
 
