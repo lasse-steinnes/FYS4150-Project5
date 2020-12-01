@@ -78,10 +78,15 @@ void Implicit::backward_substition(){
 
 void Implicit::advance(){
 // use the forward and backward to advance in space
-} // Choose here what method to use
+  forward_substution();
+  backward_substition();
+}
 
 void Implicit::solve(){
-// method to advance in time and space, uses the advance method
+// method to advance in time and space, uses the advance method
+for (int n = 0; n < m_Nt;n++){
+    advance();
+  }
 }
 
 /* Using General algo, so that we can use input which is different for the two
