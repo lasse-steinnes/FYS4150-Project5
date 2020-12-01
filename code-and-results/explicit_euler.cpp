@@ -3,8 +3,11 @@
 #include <iostream>
 #include <chrono>
 
-void Explicit_Euler::init(double T, double dt, int Lx, double dx){
-  initialize(T, dt, Lx, dx);
+using namespace arma;
+using namespace std;
+
+void Explicit_Euler::init(double T, double dt, int Lx, double dx, double u0, double uN){
+  initialize(T, dt, Lx, dx, u0, uN);
 }
 
 void Explicit_Euler::set_initial(double I(double x)){  // set up the inital condition
@@ -20,7 +23,7 @@ void Explicit_Euler::set_initial(double I(double x)){  // set up the inital cond
 void Explicit_Euler::advance(){
   // advance in space
   for (int i = 1; i < m_Nx;i++){
-    u(i) = u_n(i) + (m_dt/m_dx2)*(u_n(i+1) - 2*u_n(i) + u_n(i-1));
+    u(i) = u_n(i) + (m_dt/m_dxdx)*(u_n(i+1) - 2*u_n(i) + u_n(i-1));
     }
 
     // Enforce Dirichlet boundary condition
