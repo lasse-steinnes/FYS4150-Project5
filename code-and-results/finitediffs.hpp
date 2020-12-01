@@ -16,7 +16,7 @@ protected:
   double m_T; // time
   double m_dt; // step size time
   double m_dx; // step size in space
-  double m_dx2; // dx squared
+  double m_dxdx; // dx squared
   int m_Nt; // Number of time iterations
   int m_Nx; // number of spatial iterations
   double m_Lx; // span of dimension 1,x in [0,Lx]
@@ -24,9 +24,10 @@ protected:
   vec u, u_n, u_nn; // time vectors for stencil t+dt, t, t - dt
   vec t; // time vector
   vec Ix, It; // index sets
+  double m_u0, m_uN; // boundary condition
 
 public:
-  void initialize(double T, double dt, int Lx, double dx); // set up parameters
+  void initialize(double T, double dt, int Lx, double dx, double u0, double uN); // set up parameters
 
 };
 
@@ -35,7 +36,7 @@ class Explicit_Euler: public Diffusion_Solver{
 protected:
 
 public:
-  void init(double T, double dt, int Lx, double dx); // Set up parameters
+  void init(double T, double dt, int Lx, double dx, double u0, double uN); // Set up parameters
   void set_initial(double I(double x)); // set up the inital condition
   void advance(); // for all steps
   void solve(); // solves the system in time
@@ -45,12 +46,14 @@ public:
 class Implicit: public Diffusion_Solver{ // making a class for implicit methods
 
 protected:
+  vec m_rhs; // right hand side vector in linear system - implicit methods
+  vec m_a, m_b, m_c; // matrix vectors in implicit method
+  double m_s;
 
 public:
-  void init(); // if an init needed here, using initialize
+  void init(double T, double dt, int Lx, double dx, double u0, double uN, int method); // if an init needed here, using initialize
   void forward_substution();
   void backward_substition();
-  void solve_tridiag(); // use this method for the two implicit solvers
   void advance(); // Choose here what method to use implicit euler or CN
   void solve();
 };
