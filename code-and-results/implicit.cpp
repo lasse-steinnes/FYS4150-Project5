@@ -9,24 +9,26 @@ void Implicit::init(double T, double dt, int Lx, double dx, double u0, double uN
 
     initialize(T, dt, Lx, dx, u0, uN); // calling the general initalizer
 
+
     double x0 = 0.0;
-    m_Nx = m_Nx - 2; // redifining to number of internal grid points
-    m_dx = ((double)(m_Lx - x0)/(m_Nx+1));    // steplength h
-    m_dxdx = m_dx*m_dx;
+    m_Nx = m_Nx; // redifining to number of internal grid points
 
-    m_a = zeros<vec>(m_Nx);
-    m_b = zeros<vec>(m_Nx);      //allocating the matrix vectors a,b and c
-    m_c = zeros<vec>(m_Nx);
+    m_a = zeros<vec>(m_Nx+1);
+    m_b = zeros<vec>(m_Nx+1);      //allocating the matrix vectors a,b and c
+    m_c = zeros<vec>(m_Nx+1);
 
 
-    u_n =  zeros<vec>(m_Nx);        // time n, redefined to only include inner points
-    u =  zeros<vec>(m_Nx);          // time n+1,redefined to only include inner points
-    m_rhs = zeros<vec>(m_Nx);        //allocating the right hand side of lin. system
-    m_x = zeros<vec>(m_Nx);          //allocating the grid points
+    /*u_n =  zeros<vec>(m_Nx+1);        // time n, redefined to only include inner points
+    u =  zeros<vec>(m_Nx+1);          // time n+1,redefined to only include inner points
+    m_rhs = zeros<vec>(m_Nx+1);        //allocating the right hand side of lin. system
+    m_x = zeros<vec>(m_Nx+1);*/          //allocating the grid points
 
-    for (int i = 0; i < m_Nx; i++){
+    /*for (int i = 0; i < m_Nx+1; i++){
       m_x(i) = x0 + (i+1)*m_dx;       //filling the grid points from 0 to 1
-    }
+    }*/
+    m_rhs = zeros<vec>(m_Nx+1);
+    u_n(0) = 0; u_n(m_Nx) = 1;
+    u(0) = 0; u(m_Nx) = 1;
 
 
     if (method == 1){ //implicit euler
@@ -37,7 +39,7 @@ void Implicit::init(double T, double dt, int Lx, double dx, double u0, double uN
       }
       // special first and last righ hand side
       // last addition is using the boundary conditions
-      m_rhs(0) = u_n(0) + m_s*m_u0 ;
+      m_rhs(1) = u_n(0) + m_s*m_u0 ;
       m_rhs(m_Nx-1) = u_n(m_Nx-1) + m_s*m_uN;
 
     }
@@ -59,7 +61,7 @@ void Implicit::init(double T, double dt, int Lx, double dx, double u0, double uN
       m_a(i) = - m_s;      // lower diagonal vector
       m_b(i) = 1 + 2*m_s;  // diagonal vector
       m_c(i) = - m_s;      // upper diagonal vector
-  }
+    }
 }
 
 void Implicit::forward_substution(){
@@ -72,8 +74,9 @@ void Implicit::forward_substution(){
 void Implicit::backward_substition(){
   u(m_Nx-1) = m_rhs(m_Nx-1)/m_b(m_Nx-1);       //giving the last element of the numerical solution
   for (int i = m_Nx-2; i >= 0; i--){
-    u(i) = (m_rhs(i) - m_c(i)*u(i+1))/m_b(i);   //filling the rest of the numerical solutions
+    u(i) = (m_rhs(i) - m_c(i)*u_n(i+1))/m_b(i);   //filling the rest of the numerical solutions
   }
+  u_n = u;
 }
 
 void Implicit::advance(){
@@ -86,6 +89,7 @@ void Implicit::solve(){
 // method to advance in time and space, uses the advance method
 for (int n = 0; n < m_Nt;n++){
     advance();
+    cout << u << "\n";
   }
 }
 

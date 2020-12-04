@@ -17,12 +17,12 @@ void Diffusion_Solver::initialize(double T, double dt, int Lx, double dx, double
   m_dt = dt;
   m_Lx = Lx;
   m_dx = dx; //
-  m_dxdx = dx*dx;
+  m_dxdx = m_dx*m_dx;
   m_u0 = u0;
   m_uN = uN;
 
   // setting up spatial parameters
-  m_Nx = round(m_Lx/((double) dx)); // number of spatial iterations
+  m_Nx = round(m_Lx/((double) m_dx)); // number of spatial iterations
   m_x = linspace<vec>(0,Lx,m_Nx+1);  // +1 because then we can use index Nx for last element
 
   m_Nt = round(T/((double) m_dt));              // Integer number of time iterations
