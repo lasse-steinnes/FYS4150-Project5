@@ -20,7 +20,7 @@ int main(int argc, char const *argv[]){
   //Catch::Session().run();  // testing some numberically exact cases
   int method_solver;
   cout << "Press 1 to run explicit Euler \n";
-  cout << "Press 2 to run inplicit Euler \n";
+  cout << "Press 2 to run implicit Euler \n";
   cout << "Press 3 to run implicit Crank Nicolson \n";
   cout << "Enter number:" << " ";
   cin >> method_solver;
