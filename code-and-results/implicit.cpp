@@ -73,7 +73,7 @@ void Implicit::forward_substution(){
 
 void Implicit::backward_substition(){
   u(m_Nx-1) = m_rhs(m_Nx-1)/m_b(m_Nx-1);       //giving the last element of the numerical solution
-  for (int i = m_Nx-2; i >= 0; i--){
+  for (int i = m_Nx-2; i > 0; i--){
     u(i) = (m_rhs(i) - m_c(i)*u_n(i+1))/m_b(i);   //filling the rest of the numerical solutions
   }
   u_n = u;
