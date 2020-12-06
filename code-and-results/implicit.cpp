@@ -28,13 +28,27 @@ void Implicit::init(double T, double dt, int Lx, double dx, double u0, double uN
       m_x(i) = x0 + (i+1)*m_dx;       //filling the grid points from (0, 1),
     }                                //not including endpoints
 
-    setup_system();
+    set_fourier(); // define m_s
+
+    if (m_method == 1){
+      BE_setup_system(); // implicit euler
+    }
+    if (m_method == 2){
+      CN_setup_system();   // crank nicolson
+    }
 }
 
-void Implicit::setup_system(){
-  if (m_method == 1){ //implicit euler
-    m_s = m_dt/((double) m_dxdx);
+void Implicit::set_fourier(){ // define m_s from method used
+  if (m_method == 1){
+      m_s = m_dt/((double) m_dxdx); // implicit euler
+  }
 
+  if (m_method == 2){
+      m_s = 0.5*m_dt/((double) m_dxdx); // crank nicolson
+  }
+}
+
+void Implicit::BE_setup_system(){
     for (int i = 1; i < m_Nx-1; i++){ //filling right hand side
        m_rhs(i) = u_n(i);
     }
@@ -43,11 +57,14 @@ void Implicit::setup_system(){
     m_rhs(0) = u_n(0) + m_s*m_u0 ;
     m_rhs(m_Nx-1) = u_n(m_Nx-1) + m_s*m_uN;
 
-  }
+    for (int i = 0; i < m_Nx; i++){  //filling the matrix vectors with ai, bi and ci
+      m_a(i) = - m_s;      // lower diagonal vector
+      m_b(i) = 1 + 2*m_s;  // diagonal vector
+      m_c(i) = - m_s;      // upper diagonal vector
+    }
+}
 
-  if (m_method == 2){ // crank nicolson
-    m_s = 0.5*m_dt/((double) m_dxdx);
-
+void Implicit::CN_setup_system(){
     for (int i = 1; i < m_Nx-1; i++){ //filling right hand side
        m_rhs(i) = m_s*(u_n(i+1) + u_n(i-1)) + (1-2*m_s)*u_n(i);
     }
@@ -56,13 +73,12 @@ void Implicit::setup_system(){
     m_rhs(0) = m_s*u_n(1) + (1-2*m_s)*u_n(0) + 2*m_s*m_u0;
     m_rhs(m_Nx-1) = (1-2*m_s)*u_n(m_Nx-1) + \
                     m_s*u_n(m_Nx-2) + 2*m_s*m_uN;
-  }
 
-  for (int i = 0; i < m_Nx; i++){  //filling the matrix vectors with ai, bi and ci
-    m_a(i) = - m_s;      // lower diagonal vector
-    m_b(i) = 1 + 2*m_s;  // diagonal vector
-    m_c(i) = - m_s;      // upper diagonal vector
-  }
+    for (int i = 0; i < m_Nx; i++){  //filling the matrix vectors with ai, bi and ci
+      m_a(i) = - m_s;      // lower diagonal vector
+      m_b(i) = 1 + 2*m_s;  // diagonal vector
+      m_c(i) = - m_s;      // upper diagonal vector
+    }
 }
 
 void Implicit::forward_substution(){
@@ -88,9 +104,18 @@ void Implicit::advance(){
 
 void Implicit::solve(){
 // method to advance in time and space, uses the advance method
-for (int n = 0; n < m_Nt;n++){
-    advance();
-    setup_system();
+  if (m_method == 1){       // implicit euler
+    for (int n = 0; n < m_Nt;n++){
+      advance();
+      BE_setup_system();
+    }
   }
-  //cout << u;
+
+  if (m_method == 2){     //  crank nicolson
+    for (int n = 0; n < m_Nt;n++){
+      advance();
+      CN_setup_system();
+    }
+  }
+  cout << u;
 }

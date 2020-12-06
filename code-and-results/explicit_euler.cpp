@@ -36,5 +36,5 @@ void Explicit_Euler::solve(){ // solves the system in time
   for (int n = 0; n < m_Nt;n++){
       advance();
   }
-  cout << u_n;
+  //cout << u_n;
 }

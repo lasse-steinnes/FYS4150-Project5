@@ -53,7 +53,9 @@ protected:
 
 public:
   void init(double T, double dt, int Lx, double dx, double u0, double uN, int method); // if an init needed here, using initialize
-  void setup_system(); // Need to do this for every time step!
+  void set_fourier();
+  void BE_setup_system(); // Need to do this for every time step!
+  void CN_setup_system();
   void forward_substution();
   void backward_substition();
   void advance(); // Choose here what method to use implicit euler or CN
