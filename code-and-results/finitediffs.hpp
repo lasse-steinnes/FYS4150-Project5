@@ -1,6 +1,6 @@
 // Setting up the superclass and child class structures
 #ifndef FINITEDIFFS_HPP
-#define FiNITEDIFFS_HPP
+#define FINITEDIFFS_HPP
 
 #include <armadillo>
 #include <iostream>
