@@ -48,10 +48,14 @@ class Implicit: public Diffusion_Solver{ // making a class for implicit methods
 protected:
   vec m_rhs; // right hand side vector in linear system - implicit methods
   vec m_a, m_b, m_c; // matrix vectors in implicit method
-  double m_s;
+  double m_s;   // Fourier number
+  int m_method; // choose which method to use
 
 public:
   void init(double T, double dt, int Lx, double dx, double u0, double uN, int method); // if an init needed here, using initialize
+  void set_fourier();
+  void BE_setup_system(); // Need to do this for every time step!
+  void CN_setup_system();
   void forward_substution();
   void backward_substition();
   void advance(); // Choose here what method to use implicit euler or CN
