@@ -8,15 +8,16 @@ using namespace std;
 
 TEST_CASE("Testing 1D in stationary limit") {
 
-  auto I = [](double x) {
-        return 0.0;
-      };
   /*
   test the 1D methods in the
   stationary limit u(x,t) = x.
   */
 
   /* Numerical results */
+
+  auto I = [](double x) { // initial condition
+        return 0.0;
+      };
 
   double T = 20;
   double dx = 0.1;
@@ -63,10 +64,6 @@ TEST_CASE("Testing 1D in stationary limit") {
   }
 }
 
-TEST_CASE("Testing convergence rates 1D"){
-  /*
-  Test convergence rates for 1D methods
-  Expected convergence rates FE: 1, BE: 1, CN: 2 as dt --> 0.
-  */
+TEST_CASE("Testing 2D in stationary limit"){
 
 }

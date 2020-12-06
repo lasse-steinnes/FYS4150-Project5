@@ -40,6 +40,7 @@ public:
   void set_initial(double I(double x)); // set up the inital condition
   void advance(); // for all steps
   vec solve(); // solves the system in time
+  void convergence_rate(double I(double x), int N_experiments); // method to get convergence rate FE
 
 };
 
@@ -60,6 +61,7 @@ public:
   void backward_substition();
   void advance(); // Choose here what method to use implicit euler or CN
   vec solve();
+  void convergence_rate(int N_experiments, int method); // method to get convergence rate BE and CN
 };
 
 #endif

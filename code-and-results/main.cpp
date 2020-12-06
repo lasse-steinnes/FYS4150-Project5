@@ -64,8 +64,24 @@ int main(int argc, char const *argv[]){
   }
 
   if (method_solver == 4){ // Convergence rates
+    /* Could choose to have this as a test case
+    convergence rates for 1D methods
+    expected convergence rates FE: 1, BE: 1, CN: 2 as dt --> 0.
+    */
+    cout << "Calculating convergence rate for Forward Euler, \n \
+            Backward Euler and Crank-Nicolson \n";
+
+    // explicit methods
+    Explicit_Euler convergence;
+    convergence.convergence_rate(I,5);
+
+    // implicit methods
+    Implicit convergence1;
+    convergence1.convergence_rate(5,1); // BE
+    //convergence1.convergence_rate(5,2); // CN
 
   }
+
 
   return 0;
 }

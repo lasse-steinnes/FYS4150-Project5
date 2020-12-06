@@ -120,3 +120,45 @@ vec Implicit::solve(){
   //cout << u;
   return u; // return the last updated version
 }
+
+void Implicit::convergence_rate(int N_experiments, int method){ // method to get convergence rate
+// make sure stability criteria is being met
+  double T = 20;
+  double dx = 0.1;
+  double dt = dx*dx/2;
+  int Lx = 1;
+  double u0 = 0;
+  double uN = 1;
+  int steps = 0;
+  double L2;
+
+  // initializing vectors
+  vec numpoints = zeros<vec>(N_experiments); // number of time steps
+  vec E = zeros<vec>(N_experiments);  // error vector
+  vec h = zeros<vec>(N_experiments);  // step size dt
+  vec r = zeros<vec>(N_experiments);  // convergence rate vector
+  r(N_experiments-1)= 0.0;
+
+  while (steps < N_experiments){
+      L2 = 0.0;
+      init(T,dt,Lx,dx,u0,uN,method);
+      vec u_num = solve();
+      L2 = sqrt(m_dt*sum((m_x-u_num)%(m_x - u_num))); // % elementwise multiplication
+      E(steps) = L2;
+      h(steps) = m_dt;
+      numpoints(steps) = m_Nt;
+      dt = m_dt/((double) 2);
+      steps += 1;
+      }
+
+  // get convergence rate
+  for (int j = 1; j < N_experiments; j++){
+      r(j-1) = log(E(j)/E(j-1))/log(1/2);
+    }
+
+  cout  << "Convergence rates:\n"  << r <<"\n";
+  cout << "relative error:\n"  << E << "\n";
+  cout << "step size:\n" << h << "\n";
+}
+
+// could add a write error to file in superclass
