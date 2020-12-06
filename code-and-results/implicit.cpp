@@ -102,7 +102,7 @@ void Implicit::advance(){
   u_n = u; // set u_n to be the u calculated
 }
 
-void Implicit::solve(){
+vec Implicit::solve(){
 // method to advance in time and space, uses the advance method
   if (m_method == 1){       // implicit euler
     for (int n = 0; n < m_Nt;n++){
@@ -117,5 +117,6 @@ void Implicit::solve(){
       CN_setup_system();
     }
   }
-  cout << u;
+  //cout << u;
+  return u; // return the last updated version
 }

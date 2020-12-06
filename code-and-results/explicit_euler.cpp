@@ -31,10 +31,11 @@ void Explicit_Euler::advance(){
     u_n = u; // Set u_m = u to be used in next time step (copy u over to u_n)
 }
 
-void Explicit_Euler::solve(){ // solves the system in time
+vec Explicit_Euler::solve(){ // solves the system in time
   // Uses advance to solve the system for inner mesh points in time
   for (int n = 0; n < m_Nt;n++){
       advance();
   }
   //cout << u_n;
+  return u;
 }

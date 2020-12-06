@@ -39,7 +39,7 @@ public:
   void init(double T, double dt, int Lx, double dx, double u0, double uN); // Set up parameters
   void set_initial(double I(double x)); // set up the inital condition
   void advance(); // for all steps
-  void solve(); // solves the system in time
+  vec solve(); // solves the system in time
 
 };
 
@@ -59,7 +59,7 @@ public:
   void forward_substution();
   void backward_substition();
   void advance(); // Choose here what method to use implicit euler or CN
-  void solve();
+  vec solve();
 };
 
 #endif
