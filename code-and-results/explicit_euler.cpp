@@ -17,7 +17,7 @@ void Explicit_Euler::set_initial(double I(double x)){  // set up the inital cond
     };
 
   // enforcing dirichlet boundary conditions
-  u_n(0) = 0; u_n(m_Nx) = 1;
+  u_n(0) = m_u0; u_n(m_Nx) = m_uN;
 }
 
 void Explicit_Euler::advance(){
@@ -27,7 +27,7 @@ void Explicit_Euler::advance(){
     }
 
     // Enforce Dirichlet boundary condition
-    u(0) = 0; u(m_Nx) =  1;
+    u(0) = m_u0; u(m_Nx) =  m_uN;
     u_n = u; // Set u_m = u to be used in next time step (copy u over to u_n)
 }
 
@@ -36,4 +36,5 @@ void Explicit_Euler::solve(){ // solves the system in time
   for (int n = 0; n < m_Nt;n++){
       advance();
   }
+  cout << u_n;
 }
