@@ -42,9 +42,9 @@ vec Explicit_Euler::solve(){ // solves the system in time
 
 void Explicit_Euler::convergence_rate(double I(double x),int N_experiments){ // get convergence rate for FE
 // make sure stability criteria is being met?
-  double T = 20;
+  double T = 10.0;
   double dx = 0.1;
-  double dt = dx*dx/2; // let it be on stability criteria
+  double dt = dx*dx/3; // let it be on stability criteria
   int Lx = 1;
   double u0 = 0;
   double uN = 1;
@@ -63,22 +63,25 @@ void Explicit_Euler::convergence_rate(double I(double x),int N_experiments){ // 
       init(T,dt,Lx,dx,u0,uN);
       set_initial(I);
       vec u_num = solve();
+      //cout << (m_x-u_num) << "\n";
       L2 = sqrt(m_dt*sum((m_x-u_num)%(m_x - u_num))); // % elementwise multiplication
       E(steps) = L2;
       h(steps) = m_dt;
       numpoints(steps) = m_Nt;
-      dt = m_dt/((double) 2);
+      dt = m_dt/((double) 2); // update step size
+      dx =  sqrt(3*dt);
+      //cout << "dx" << dx;
       steps += 1;
       }
 
   // get convergence rate
   for (int j = 1; j < N_experiments; j++){
-      r(j-1) = log(E(j)/E(j-1))/log(1/2);
+      r(j) = log10(E(j)/E(j-1))/((double) log10(h(j)/h(j-1)));
     }
 
   cout  << "Convergence rates:\n"  << r <<"\n";
-  cout << "relative error:\n"  << E << "\n";
-  cout << "step size:\n" << h << "\n";
+  cout << "L2-norm:\n"  << E << "\n";
+  //cout << "step size:\n" << h << "\n";
 }
 
 // could add a write error to file in superclass

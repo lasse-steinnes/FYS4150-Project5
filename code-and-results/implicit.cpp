@@ -124,7 +124,7 @@ vec Implicit::solve(){
 void Implicit::convergence_rate(int N_experiments, int method){ // method to get convergence rate
 // make sure stability criteria is being met
   double T = 20;
-  double dx = 0.1;
+  double dx = 0.2;
   double dt = dx*dx/2;
   int Lx = 1;
   double u0 = 0;
@@ -153,7 +153,7 @@ void Implicit::convergence_rate(int N_experiments, int method){ // method to get
 
   // get convergence rate
   for (int j = 1; j < N_experiments; j++){
-      r(j-1) = log(E(j)/E(j-1))/log(1/2);
+      r(j) = log10(E(j)/E(j-1))/log10(h(j)/(h(j-1)));
     }
 
   cout  << "Convergence rates:\n"  << r <<"\n";

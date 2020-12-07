@@ -14,7 +14,7 @@ using namespace arma;
 double I(double x);
 
 int main(int argc, char const *argv[]){
-  Catch::Session().run();  // testing some numerical cases vs analytical results
+  //Catch::Session().run();  // testing some numerical cases vs analytical results
 
   int method_solver;
   cout << "Press 1 to run explicit Euler \n";
@@ -73,12 +73,12 @@ int main(int argc, char const *argv[]){
 
     // explicit methods
     Explicit_Euler convergence;
-    convergence.convergence_rate(I,5);
+    //convergence.convergence_rate(I,8);
 
-    // implicit methods
+  //   implicit methods
     Implicit convergence1;
-    convergence1.convergence_rate(5,1); // BE
-    //convergence1.convergence_rate(5,2); // CN
+    //convergence1.convergence_rate(5,1); // BE
+    convergence1.convergence_rate(5,2); // CN
 
   }
 
