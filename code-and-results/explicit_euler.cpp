@@ -2,6 +2,7 @@
 #include <armadillo>
 #include <iostream>
 #include <chrono>
+#include <iomanip>
 
 using namespace arma;
 using namespace std;
@@ -11,8 +12,7 @@ void Explicit_Euler::init(double T, double dt, int Lx, double dx, double u0, dou
 }
 
 void Explicit_Euler::set_initial(double I(double x)){  // set up the inital condition
-  // Note: x[i-Ix[0]] Is the right index.
-  for (int i = 1; i < m_Nx; i++){ //Ix.back gets last element in vector
+  for (int i = 1; i < m_Nx; i++){
               u_n(i) = I(m_x(i));
     };
 
@@ -84,4 +84,21 @@ void Explicit_Euler::convergence_rate(double I(double x),int N_experiments){ // 
   //cout << "step size:\n" << h << "\n";
 }
 
-// could add a write error to file in superclass
+// could also add a write error to file in superclass
+
+void Explicit_Euler::open_mesh_to_file(ofstream&file){ // open file
+  // open spin to file if true
+  string filename(string("./results/1D-solutions/") +  \
+                  "-Nx-" + to_string(m_Nx) + "-Nt-" + to_string(m_Nt) +  "-FE.txt");
+  file.open(filename);
+  file << setprecision(8) << "T:" << m_T << " " << "dt" << m_dt \
+      << " " << "dx:" << m_dx;
+  file << "\n";
+}
+
+void Explicit_Euler::write_mesh_to_file(ofstream&file){ // write u to file
+  for (int i = 0; i <= m_Nx;i++){
+    file << setprecision(15) << u(i);
+    file << "\n";
+  }
+} // remember to close file

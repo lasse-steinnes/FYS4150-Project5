@@ -2,6 +2,8 @@
 #include <armadillo>
 #include <iostream>
 #include <chrono>
+#include <iomanip>
+
 using namespace arma;
 using namespace std;
 
@@ -84,7 +86,7 @@ void Implicit::CN_setup_system(){
 void Implicit::forward_substution(){
   for (int i = 1; i < m_Nx; i++){
     m_b(i) = m_b(i) - (m_a(i-1)*m_c(i-1))/m_b(i-1);        //updating the main diagonal
-    m_rhs(i) = m_rhs(i) - (m_rhs(i-1)*m_c(i-1))/m_b(i-1);      //updating the right hand side g_i
+    m_rhs(i) = m_rhs(i) - (m_rhs(i-1)*m_c(i-1))/m_b(i-1);      //updating the right hand side
   }
 }
 
@@ -161,4 +163,34 @@ void Implicit::convergence_rate(int N_experiments, int method){ // method to get
   cout << "step size:\n" << h << "\n";
 }
 
-// could add a write error to file in superclass
+// could also add a write error to file in superclass
+void Implicit::open_mesh_to_file(ofstream&file){ // open file
+  // open spin to file if true
+  if (m_method == 1){
+  string filename(string("./results/1D-solutions/") +  \
+                  "-Nx-" + to_string(m_Nx) + "-Nt-" + to_string(m_Nt) + "-BE.txt");
+  file.open(filename);
+  }
+
+  if (m_method == 2){
+    string filename(string("./results/1D-solutions/") +  \
+                    "-Nx-" + to_string(m_Nx) + "-Nt-" + to_string(m_Nt) + "-CN.txt");
+    file.open(filename);
+  }
+
+  file << setprecision(8) << "T:" << m_T << " " << "dt" << m_dt \
+      << " " << "dx:" << m_dx;
+  file << "\n";
+}
+
+void Implicit::write_mesh_to_file(ofstream&file){ // write u to file
+  file << m_u0 << "\n"; // left BC
+
+  for (int i = 1; i < m_Nx;i++){ // inner points
+    file << setprecision(15) << u(i);
+    file << "\n";
+
+  file << m_uN; // right boundary
+
+  }
+} // remember to close file

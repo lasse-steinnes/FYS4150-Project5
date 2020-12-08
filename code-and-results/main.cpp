@@ -12,6 +12,7 @@ using namespace arma;
 
 
 double I(double x);
+double I_2D(double x, double y);
 
 int main(int argc, char const *argv[]){
   //Catch::Session().run();  // testing some numerical cases vs analytical results
@@ -20,25 +21,26 @@ int main(int argc, char const *argv[]){
   cout << "Press 1 to run explicit Euler \n";
   cout << "Press 2 to run implicit Euler \n";
   cout << "Press 3 to run implicit Crank Nicolson \n";
-  cout << "Press 4 to calculate convergence rates \n";
+  cout << "Press 4 to calculate convergence rates in 1D \n";
+  cout << "Press 5 to run implicit Euler in 2D \n";
   cout << "Enter number:" << " ";
   cin >> method_solver;
 
   if (method_solver == 1){ // Forward Euler
-    Explicit_Euler Solver;
     double T = 0.1;
     double dx = 0.1;
     double dt = dx*dx/3;
     int Lx = 1;
     double u0 = 0;
     double uN = 1;
+
+    Explicit_Euler Solver;
     Solver.init(T,dt,Lx,dx,u0,uN);
     Solver.set_initial(I);
     vec u = Solver.solve();
   }
 
   if (method_solver == 2){ // Implicit Euler
-    Implicit Solver;
     double T = 0.1;
     double dx = 0.1;
     double dt = dx*dx/3;
@@ -46,12 +48,12 @@ int main(int argc, char const *argv[]){
     double u0 = 0;
     double uN = 1;
     int method = 1;
+    Implicit Solver;
     Solver.init(T,dt,Lx,dx,u0,uN,method);
     vec u = Solver.solve();
   }
 
   if (method_solver == 3){ // Crank-Nicolson
-    Implicit Solver;
     double T = 0.1;
     double dx = 0.1;
     double dt = dx*dx/3;
@@ -59,6 +61,8 @@ int main(int argc, char const *argv[]){
     double u0 = 0;
     double uN = 1;
     int method = 2;
+
+    Implicit Solver;
     Solver.init(T,dt,Lx,dx,u0,uN,method);
     vec u = Solver.solve();
   }
@@ -82,10 +86,28 @@ int main(int argc, char const *argv[]){
 
   }
 
+  if (method_solver == 5){ // do implicitBE in 2D
+    double T = 0.1;
+    double dx = 0.1;
+    double dt = dx*dx/3;
+    int Lx = 1;
+    double u0 = 0;
+    double uN = 1;
+    /*
+    Implicit_BE Solver;
+    Solver.initialize(T,dt,Lx,dx,u0,uN);
+    Solver.set_initial(I_2D);
+    vec u = Solver.solve();
+    */
+  }
 
   return 0;
 }
 
 double I(double x){
   return 0.0;
+}
+
+double I_2D(double x, double y){
+  return 0.0;// gauss curve
 }

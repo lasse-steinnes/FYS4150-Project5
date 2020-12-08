@@ -6,6 +6,7 @@
 #include <iostream>
 #include <chrono>
 
+
 using namespace arma;
 using namespace std;
 
@@ -21,14 +22,13 @@ protected:
   int m_Nx; // number of spatial iterations
   double m_Lx; // span of dimension 1,x in [0,Lx]
   vec m_x; // spatial mesh
-  vec u, u_n, u_nn; // time vectors for stencil t+dt, t, t - dt
+  vec u, u_n; // time vectors for stencil t+dt, t, t - dt
   vec t; // time vector
-  vec Ix, It; // index sets
   double m_u0, m_uN; // boundary condition
+  ofstream m_file_mesh; // cycles to file,  to get access
 
 public:
   void initialize(double T, double dt, int Lx, double dx, double u0, double uN); // set up parameters
-
 };
 
 class Explicit_Euler: public Diffusion_Solver{
@@ -41,6 +41,8 @@ public:
   void advance(); // for all steps
   vec solve(); // solves the system in time
   void convergence_rate(double I(double x), int N_experiments); // method to get convergence rate FE
+  void open_mesh_to_file(ofstream&file); // open file
+  void write_mesh_to_file(ofstream&file); // write solution to file
 
 };
 
@@ -62,6 +64,8 @@ public:
   void advance(); // Choose here what method to use implicit euler or CN
   vec solve();
   void convergence_rate(int N_experiments, int method); // method to get convergence rate BE and CN
+  void open_mesh_to_file(ofstream&file); // open file
+  void write_mesh_to_file(ofstream&file); // write solution to file
 };
 
 #endif
