@@ -20,7 +20,7 @@ void Implicit_BE::set_initial(double I(double x, double y)){
 
 void Implicit_BE::jacobi_iteration_method(int max_iterations, double tol){
  // Jacobi iteration for spatial solution at a specific time
- u_temp = zeros<vec>((m_Nx +1)*(m_Ny + 1)); // Temporal array for iterative method,
+ // u_temp = zeros<vec>((m_Nx +1)*(m_Ny + 1)); // Temporal array for iterative method,
  // Setting u_temp to zero (could start random as well (might converge faster))
  double diff;
  int nn = m_Nx*m_Nx;
@@ -55,7 +55,7 @@ vec Implicit_BE::solve(int max_iterations, double tol){
 
 void Implicit_BE::open_mesh_to_file(ofstream&file){ // open file
   // open spin to file if true
-  string filename(string("./results/2D-solutions/") +  "-Nx-" \
+  string filename(string("./results/2D-solutions/2Dsol-Nx-") \
                     + to_string(m_Nx) + "-Nt-" + to_string(m_Nt) + "-BE.txt");
   file.open(filename);
   file << setprecision(8) << "T:" << m_T << " " << "dt" << m_dt \

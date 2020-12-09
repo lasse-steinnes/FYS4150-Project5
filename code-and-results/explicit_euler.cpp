@@ -89,7 +89,7 @@ void Explicit_Euler::convergence_rate(double I(double x),int N_experiments){ // 
 void Explicit_Euler::open_mesh_to_file(ofstream&file){ // open file
   // open spin to file if true
   string filename(string("./results/1D-solutions/") +  \
-                  "-Nx-" + to_string(m_Nx) + "-Nt-" + to_string(m_Nt) +  "-FE.txt");
+                  "1Dsol-Nx-" + to_string(m_Nx) + "-Nt-" + to_string(m_Nt) +  "-FE.txt");
   file.open(filename);
   file << setprecision(8) << "T:" << m_T << " " << "dt" << m_dt \
       << " " << "dx:" << m_dx;
