@@ -64,8 +64,10 @@ void Implicit_BE::open_mesh_to_file(ofstream&file){ // open file
 }
 
 void Implicit_BE::write_mesh_to_file(ofstream&file){ // write u to file
-  for (int i = 0; i <= m_Nx;i++){ // inner points
-    file << setprecision(15) << u(i);
-    file << "\n";
+  for (int j = 0; j <= m_Ny; j++){
+    for (int i = 0; i <= m_Nx;i++){ // all points
+    file << setprecision(15) << u(j*m_k + i);
+    }
+  file << "\n"; // for each row create a new line
   }
 } // remember to close file

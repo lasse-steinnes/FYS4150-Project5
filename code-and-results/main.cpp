@@ -2,10 +2,12 @@
 #define CATCH_CONFIG_RUNNER // This tells Catch to not provide a main()
 #include "catch.hpp"
 #include "finitediffs.hpp"
+#include "finitediffs2d.hpp"
 #include <iostream>
 #include <armadillo>
 #include <omp.h>
 #include <stdio.h>
+#include <cmath>
 
 using namespace std;
 using namespace arma;
@@ -88,19 +90,28 @@ int main(int argc, char const *argv[]){
 
   if (method_solver == 5){ // do implicitBE in 2D
     double T = 0.1;
-    double dx = 0.1;
-    double dt = dx*dx/3;
+    double h = 0.1;
+    double dt = h*h/3;
+    // set upper limits for x and y,
+    // PS: Jacobi is ensure to converge for square system
     int Lx = 1;
-    double u0 = 0;
-    double uN = 1;
-    /*
-    Implicit_BE Solver;
-    Solver.initialize(T,dt,Lx,dx,u0,uN);
-    Solver.set_initial(I_2D);
-    vec u = Solver.solve();
-    */
-  }
+    int Ly = 1;
 
+    // boundary conditions
+    double u0x = 0;
+    double uNx = 0;
+    double u0y = 0;
+    double uNy = 0;
+
+    // iteration specifications
+    int max_iter = 1e3;
+    double tol = 1e-5;
+
+    Implicit_BE Solver;
+    Solver.initialize(T,dt,Lx,Ly,h,u0x,uNx,u0y,uNy);
+    Solver.set_initial(I_2D);
+    vec u = Solver.solve(max_iter, tol);
+  }
   return 0;
 }
 
@@ -109,5 +120,6 @@ double I(double x){
 }
 
 double I_2D(double x, double y){
-  return 0.0;// gauss curve
+  // assumes scaled case with x,y in [0,1]
+  return 1 + exp(-((x-0.5)*(x-0.5) + (y - 0.5)*(y - 0.5))) ;// gauss curve
 }
