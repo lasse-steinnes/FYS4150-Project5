@@ -121,5 +121,5 @@ double I(double x){
 
 double I_2D(double x, double y){
   // assumes scaled case with x,y in [0,1]
-  return 1 + exp(-((x-0.5)*(x-0.5) + (y - 0.5)*(y - 0.5))) ;// gauss curve
+  return exp(-((x-0.5)*(x-0.5) + (y - 0.5)*(y - 0.5))) ;// gauss curve
 }
