@@ -79,12 +79,12 @@ int main(int argc, char const *argv[]){
 
     // explicit methods
     Explicit_Euler convergence;
-    //convergence.convergence_rate(I,8);
+    convergence.convergence_rate(I,8);
 
   //   implicit methods
-    Implicit convergence1;
+    //Implicit convergence1;
     //convergence1.convergence_rate(5,1); // BE
-    convergence1.convergence_rate(5,2); // CN
+    //convergence1.convergence_rate(5,2); // CN
 
   }
 

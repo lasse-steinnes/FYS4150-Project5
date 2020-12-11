@@ -43,13 +43,13 @@ vec Explicit_Euler::solve(){ // solves the system in time
 void Explicit_Euler::convergence_rate(double I(double x),int N_experiments){ // get convergence rate for FE
 // make sure stability criteria is being met?
   double T = 10.0;
-  double dx = 0.1;
+  double dx = 0.2;
   double dt = dx*dx/3; // let it be on stability criteria
   int Lx = 1;
   double u0 = 0;
   double uN = 1;
   int steps = 0;
-  double L2;
+  double error,next_error;
 
   // initializing vectors
   vec numpoints = zeros<vec>(N_experiments); // number of time steps
@@ -59,20 +59,33 @@ void Explicit_Euler::convergence_rate(double I(double x),int N_experiments){ // 
   r(N_experiments-1)= 0.0;
 
   while (steps < N_experiments){
-      L2 = 0.0;
       init(T,dt,Lx,dx,u0,uN);
       set_initial(I);
       vec u_num = solve();
       //cout << (m_x-u_num) << "\n";
-      L2 = sqrt(m_dt*sum((m_x-u_num)%(m_x - u_num))); // % elementwise multiplication
-      E(steps) = L2;
+      // try to use max-norm instead maybe,
+
+      error = 0.0;
+      /* L2 norm
+      for (int i = 0; i < m_Nx; i++){    //For all time steps
+        next_error =  m_x(i) - u_num(i);   //Calulating the error.
+        error = error + next_error*next_error;
+        }
+        */
+      //Supremum norm
+      for (int i = 0; i < m_Nx; i++){    //For all time steps
+        next_error =  m_x(i) - u_num(i);   //Calulating the error.
+        error = max(next_error,error);
+      }
+
+      E(steps) = sqrt(m_dt*error);
       h(steps) = m_dt;
       numpoints(steps) = m_Nt;
       dt = m_dt/((double) 2); // update step size
-      dx =  sqrt(3*dt);
-      //cout << "dx" << dx;
+      dx =  sqrt(3*dt);//2
       steps += 1;
       }
+
 
   // get convergence rate
   for (int j = 1; j < N_experiments; j++){
