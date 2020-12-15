@@ -2,6 +2,8 @@
 #include <armadillo>
 #include <iostream>
 #include <chrono>
+#include <iomanip>
+
 using namespace arma;
 using namespace std;
 
@@ -84,7 +86,7 @@ void Implicit::CN_setup_system(){
 void Implicit::forward_substution(){
   for (int i = 1; i < m_Nx; i++){
     m_b(i) = m_b(i) - (m_a(i-1)*m_c(i-1))/m_b(i-1);        //updating the main diagonal
-    m_rhs(i) = m_rhs(i) - (m_rhs(i-1)*m_c(i-1))/m_b(i-1);      //updating the right hand side g_i
+    m_rhs(i) = m_rhs(i) - (m_rhs(i-1)*m_c(i-1))/m_b(i-1);      //updating the right hand side
   }
 }
 
@@ -103,7 +105,7 @@ void Implicit::advance(){
   u_n = u; // set u_n to be the u calculated
 }
 
-void Implicit::solve(){
+vec Implicit::solve(){
 // method to advance in time and space, uses the advance method
   if (m_method == 1){       // implicit euler
     for (int n = 0; n < m_Nt;n++){
@@ -118,5 +120,78 @@ void Implicit::solve(){
       CN_setup_system();
     }
   }
-  cout << u;
+  //cout << u;
+  return u; // return the last updated version
 }
+
+void Implicit::convergence_rate(int N_experiments, int method){ // method to get convergence rate
+// make sure stability criteria is being met
+  double T = 20;
+  double dx = 0.2;
+  double dt = dx*dx/2;
+  int Lx = 1;
+  double u0 = 0;
+  double uN = 1;
+  int steps = 0;
+  double L2;
+
+  // initializing vectors
+  vec numpoints = zeros<vec>(N_experiments); // number of time steps
+  vec E = zeros<vec>(N_experiments);  // error vector
+  vec h = zeros<vec>(N_experiments);  // step size dt
+  vec r = zeros<vec>(N_experiments);  // convergence rate vector
+  r(N_experiments-1)= 0.0;
+
+  while (steps < N_experiments){
+      L2 = 0.0;
+      init(T,dt,Lx,dx,u0,uN,method);
+      vec u_num = solve();
+      L2 = sqrt(m_dt*sum((m_x-u_num)%(m_x - u_num))); // % elementwise multiplication
+      E(steps) = L2;
+      h(steps) = m_dt;
+      numpoints(steps) = m_Nt;
+      dt = m_dt/((double) 2);
+      steps += 1;
+      }
+
+  // get convergence rate
+  for (int j = 1; j < N_experiments; j++){
+      r(j) = log10(E(j)/E(j-1))/log10(h(j)/(h(j-1)));
+    }
+
+  cout  << "Convergence rates:\n"  << r <<"\n";
+  cout << "relative error:\n"  << E << "\n";
+  cout << "step size:\n" << h << "\n";
+}
+
+// could also add a write error to file in superclass
+void Implicit::open_mesh_to_file(ofstream&file){ // open file
+  // open spin to file if true
+  if (m_method == 1){
+  string filename(string("./results/1D-solutions/") +  \
+                  "1Dsol-Nx-" + to_string(m_Nx) + "-Nt-" + to_string(m_Nt) + "-BE.txt");
+  file.open(filename);
+  }
+
+  if (m_method == 2){
+    string filename(string("./results/1D-solutions/") +  \
+                    "1Dsol-Nx-" + to_string(m_Nx) + "-Nt-" + to_string(m_Nt) + "-CN.txt");
+    file.open(filename);
+  }
+
+  file << setprecision(8) << "T:" << m_T << " " << "dt" << m_dt \
+      << " " << "dx:" << m_dx;
+  file << "\n";
+}
+
+void Implicit::write_mesh_to_file(ofstream&file){ // write u to file
+  file << m_u0 << "\n"; // left BC
+
+  for (int i = 1; i < m_Nx;i++){ // inner points
+    file << setprecision(15) << u(i);
+    file << "\n";
+
+  file << m_uN; // right boundary
+
+  }
+} // remember to close file

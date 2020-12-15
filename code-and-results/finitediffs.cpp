@@ -28,14 +28,7 @@ void Diffusion_Solver::initialize(double T, double dt, int Lx, double dx, double
   m_Nt = round(T/((double) m_dt));              // Integer number of time iterations
   t = linspace<vec>(0,m_Nt*m_dt,m_Nt+1);              // time mesh
 
-  // Initialize vectors (1 dimensional mesh
-  //u_nn = zeros<vec>(m_Nx+1);           // time n-1, so that t -dt
+  // Initialize vectors (1 dimensional mesh)
   u_n =  zeros<vec>(m_Nx+1);       // time n, so that
   u =  zeros<vec>(m_Nx+1);             // time n+1, so that t + dt
-
-  // needing to use ghost cells i = -1,0 ... Nx+1 for implicit method?
-
-  // Index sets, only iterates over INNER points
-  Ix = linspace<vec>(1,u.n_elem-1, u.n_elem-1); //(end-start +1) to get endpoint
-  It = linspace<vec>(0,t.n_elem,t.n_elem + 1);  // time index set
 }
