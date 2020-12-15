@@ -24,18 +24,30 @@ int main(int argc, char const *argv[]){
   cout << "Press 3 to run implicit Crank Nicolson \n";
   cout << "Enter number:" << " ";
   cin >> method_solver;
+  int dim;
 
   if (method_solver == 1){
-    Explicit_Euler Solver;
     double T = 0.1;
     double dx = 0.1;
     double dt = dx*dx/3;
     int Lx = 1;
     double u0 = 0;
     double uN = 1;
-    Solver.init(T,dt,Lx,dx,u0,uN);
-    Solver.set_initial(I);
-    Solver.solve();
+    //cout << "Solve for 1 or 2 dimensions? (1/2):" << " ";
+    //cin >> dim;
+    /*if (dim == 1){
+      cout << "er i dim1" << "\n";
+      Explicit_Euler Solver;
+      Solver.init(T,dt,Lx,dx,u0,uN);
+      Solver.set_initial(I);
+      Solver.solve();
+    }*/
+    cout << "er i dim2" << "\n";
+    Explicit_EulerTwoDim Solver;
+    Solver.init2D(T,dt,Lx,dx,u0,uN);
+    Solver.set_initial2D();
+    cout << "er i dim2" << "\n";
+    Solver.solve2D();
   }
 
   if (method_solver == 2){
