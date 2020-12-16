@@ -45,7 +45,7 @@ int main(int argc, char const *argv[]){
 
   if (method_solver == 2){ // Implicit Euler
     double T = 0.1;
-    double dx = 0.1;
+    double dx = 0.01;
     double dt = dx*dx/3;
     int Lx = 1;
     double u0 = 0;
@@ -58,7 +58,7 @@ int main(int argc, char const *argv[]){
 
   if (method_solver == 3){ // Crank-Nicolson
     double T = 0.1;
-    double dx = 0.1;
+    double dx = 0.01;
     double dt = dx*dx/3;
     int Lx = 1;
     double u0 = 0;

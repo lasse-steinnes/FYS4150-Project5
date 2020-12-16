@@ -9,7 +9,7 @@ dim = int(input("Want to plot 1D or 2D solution (1/2)?: "))
 if dim == 1:
     Nx = int(input("Set Nx (int):")) # 100
     Nt =  int(input("Set Nt (int):"))# 3000
-    T = int(input("Set T (float):")) # 0.1
+    T = float(input("Set T (float):")) # 0.1
 
     infile_FE = open("./results/1D-solutions/" + "1Dsol-Nx-" + str(Nx) + "-Nt-" + str(Nt) +  "-FE.txt", "r")
     infile_BE = open("./results/1D-solutions/" + "1Dsol-Nx-" + str(Nx) + "-Nt-" + str(Nt) +  "-BE.txt", "r")
@@ -22,6 +22,7 @@ if dim == 1:
     u_FE = np.loadtxt(infile_FE)
     u_BE = np.loadtxt(infile_BE)
     u_CN = np.loadtxt(infile_CN)
+
 
     x = np.linspace(0,1,Nx+1)
     t_array = np.linspace(0,0.1,Nt+1)
@@ -38,31 +39,28 @@ if dim == 1:
     uxt_an = u(x)
 
 
+    plt.figure()
+    plt.plot(x,u_FE[int(Nt/5),:], label = 'Forward Euler t1')
+    plt.plot(x,u_BE[int(Nt/5),:], label = 'Implicit Backward t1')
+    plt.plot(x,u_CN[int(Nt/5),:], label = 'Crank-Nicholson t1')
+    plt.plot(x,uxt_an, label = 'analytical expression')
+    plt.title('Method comparison for time t1',fontsize = 14)
+    plt.legend(fontsize = 11)
+    plt.xticks(fontsize=13)
+    plt.yticks(fontsize=13)
+    plt.savefig("./results/figures/1d-sol/1d-Nx-{:d}-Nt-{:d}-t1.png".format(Nx,Nt))
+
 
     plt.figure()
-    plt.plot(x,u_FE[int(Nt/5),:], label = 't1')
-    plt.plot(x,u_FE[-1,:], label = 't2')
+    plt.plot(x,u_FE[-1,:], label = 'Forward Euler $t_2$')
+    plt.plot(x,u_BE[-1,:], label = 'Implicit Backward t2')
+    plt.plot(x,u_CN[-1,:], label = 'Crank-Nicholson t2')
     plt.plot(x,uxt_an, label = 'analytical expression')
-    plt.title('Forward Euler solution')
-    plt.legend()
-
-    plt.figure()
-    plt.plot(x,u_BE[int(Nt/5),:], label = 't1')
-    plt.plot(x,u_BE[-1,:], label = 't2')
-    plt.plot(x,uxt_an, label = 'analytical expression')
-    plt.title('Implisit backward solution')
-    plt.legend()
-
-    plt.figure()
-    plt.plot(x,u_CN[int(Nt/5),:], label = 't1')
-    plt.plot(x,u_CN[-1,:], label = 't2')
-    plt.plot(x,uxt_an, label = 'analytical expression')
-    plt.title('Crank-Nicholson solution')
-    plt.legend()
+    plt.title('Method comparison for time t2',fontsize = 14)
+    plt.legend(fontsize = 11)
+    plt.savefig("./results/figures/1d-sol/1d-Nx-{:d}-Nt-{:d}-t2.png".format(Nx,Nt))
     plt.show()
 
-## save
-# plt.savefig("./results/figures/1d-sol/1d-Nx-{:d}-Nt-{:d}.png".format(Nx,Nt))
 if dim == 2:
     # make a 2D plot
     Nx = int(input("Set Nx (int):")) # 10
@@ -109,9 +107,9 @@ if dim == 2:
 
     # formatting
     plt.title('{:}'.format(T),fontsize = 14)
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
-    ax.set_zlabel("u(x,y)")
+    ax.set_xlabel('x',fontsize = 13)
+    ax.set_ylabel('y',fontsize = 13)
+    ax.set_zlabel("u(x,y)", fontsize = 13)
     plt.xticks(fontsize=13)
     plt.yticks(fontsize=13)
     plt.tight_layout()

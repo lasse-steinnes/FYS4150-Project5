@@ -65,5 +65,34 @@ TEST_CASE("Testing 1D in stationary limit") {
 }
 
 TEST_CASE("Testing 2D in stationary limit"){
+/* first draft
+  auto I = [](double x) { // initial condition
+        return  0.75*exp(-((x-0.5)/(0.2)*(x-0.5)/(0.2) + (y - 0.5)/0.2*(y - 0.5)/0.2));
+      };
+
+  double T = 20;
+  double h = 0.1;
+  double dt = h*h/3;
+
+  int Lx = 1;
+  int Ly = 1;
+
+  // boundary conditions
+  double u0x = 0;
+  double uNx = 0;
+  double u0y = 0;
+  double uNy = 0;
+
+  double Nh = round(Lx/((double) dx)); // number of spatial iterations
+  vec u_ana
+  // iteration specifications
+  int max_iter = 10e3;
+  double tol = 1e-10;
+
+  Implicit_BE Solver;
+  Solver.initialize(T,dt,Lx,Ly,h,u0x,uNx,u0y,uNy);
+  Solver.set_initial(I_2D);
+  vec u = Solver.solve(max_iter, tol);
+*/
 
 }
