@@ -17,3 +17,6 @@ execute:
 
 plot:
 	python3 plot_sol.py
+
+plot2:
+	python3 plot_amplification.py
