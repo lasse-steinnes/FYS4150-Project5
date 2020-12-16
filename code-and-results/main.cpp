@@ -50,7 +50,7 @@ int main(int argc, char const *argv[]){
     int Lx = 1;
     double u0 = 0;
     double uN = 1;
-    int method = 1;
+    int method = 2;
     Implicit Solver;
     Solver.init(T,dt,Lx,dx,u0,uN,method);
     vec u = Solver.solve();

@@ -51,6 +51,7 @@ vec Implicit_BE::solve(int max_iterations, double tol){
   }
   open_mesh_to_file(m_file_mesh);
   write_mesh_to_file(m_file_mesh);
+  m_file_mesh.close();
   return u;
 }
 
