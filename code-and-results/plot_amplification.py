@@ -28,9 +28,6 @@ markers_on = []
 for i in range(10):
     markers_on.append(i*100)
 
-
-
-
 # Plot for different F values
 for i in range(len(F)):
     ax[i].set_title("F:{:.1f}".format(F[i]),fontsize=14)
@@ -46,6 +43,6 @@ ax[1].legend(fontsize=13)
 
 plt.tight_layout()
 
-## save
 
+plt.savefig("./results/figures/ampf/amplfication.png")
 plt.show()

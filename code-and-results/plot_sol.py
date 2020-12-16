@@ -2,13 +2,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
-dim = int(input("Want to plot in 1D or 2D (1/2)?: "))
+dim = int(input("Want to plot 1D or 2D solution (1/2)?: "))
 
 if dim == 1:
     Nx = int(input("Set Nx (int):")) # 100
     Nt =  int(input("Set Nt (int):"))# 3000
-    T = 0.1
+    T = int(input("Set T (float):")) # 0.1
 
     infile_FE = open("./results/1D-solutions/" + "1Dsol-Nx-" + str(Nx) + "-Nt-" + str(Nt) +  "-FE.txt", "r")
     infile_BE = open("./results/1D-solutions/" + "1Dsol-Nx-" + str(Nx) + "-Nt-" + str(Nt) +  "-BE.txt", "r")
@@ -61,10 +62,9 @@ if dim == 1:
     plt.show()
 
 ## save
-
+# plt.savefig("./results/figures/1d-sol/1d-Nx-{:d}-Nt-{:d}.png".format(Nx,Nt))
 if dim == 2:
     # make a 2D plot
-    #T = 0.1
     Nx = int(input("Set Nx (int):")) # 10
     Ny = int(input("Set Ny (int):")) # 10
     Nt = int(input("Set Nt (int):")) # 6000
@@ -74,12 +74,10 @@ if dim == 2:
 
     # read from file
     line = infile_2DBE.readline()
-    T = line.split()[1]
+    T = line.split()[0]
 
     # get vector
     u2D = np.loadtxt(infile_2DBE)
-
-    #print(u2D)
 
     # Create mesh for surface plotting
     x = np.linspace(0,1,Nx+1)
@@ -90,19 +88,33 @@ if dim == 2:
     fig = plt.figure()
     ax = fig.gca(projection='3d')
 
-    #print("u2d shape:",np.shape(u2D))
-    #print("\n")
-    #print("xy shape:",np.shape(X))
     # Plot the surface.
     surf = ax.plot_surface(X, Y, u2D,cmap=cm.coolwarm,
                        linewidth=0, antialiased=False)
 
     # Customize the z axis.
-    #ax.set_xlim(-1.01, 1.01)
-    #ax.zaxis.set_major_locator(LinearLocator(10))
-    #ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+    ax.set_zlim(0, 0.8)
 
     # Add a color bar which maps values to colors.
     fig.colorbar(surf, shrink=0.5, aspect=5)
 
+    ## chose colour of axis
+    ax.tick_params(axis='x',colors='grey')
+    ax.tick_params(axis='y',colors='grey')
+    ax.tick_params(axis='z',colors='grey')
+
+    ax.w_xaxis.line.set_color("grey")
+    ax.w_yaxis.line.set_color("grey")
+    ax.w_zaxis.line.set_color("grey")
+
+    # formatting
+    plt.title('{:}'.format(T),fontsize = 14)
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_zlabel("u(x,y)")
+    plt.xticks(fontsize=13)
+    plt.yticks(fontsize=13)
+    plt.tight_layout()
+
+    plt.savefig("./results/figures/2d-sol/2d-Nx-{:d}-Ny-{:d}-Nt-{:d}.png".format(Nx,Ny,Nt))
     plt.show()
