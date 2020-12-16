@@ -10,7 +10,7 @@
 all: compile execute
 
 compile:
-	g++ -o main.out $(wildcard *.cpp) -larmadillo -std=c++11 -Ofast -lomp -Xpreprocessor -fopenmp
+	g++-10 -o main.out $(wildcard *.cpp) -larmadillo -std=c++11 -fopenmp -Ofast
 
 execute:
 	./main.out

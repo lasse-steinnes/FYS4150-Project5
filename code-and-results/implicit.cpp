@@ -150,7 +150,7 @@ void Implicit::advance(){
 
  void Implicit::write_mesh_to_file(ofstream&file){ // write u to file
    file << m_u0 << " "; // left BC
-   for (int i = 1; i < m_Nx;i++){ // inner points
+   for (int i = 0; i < m_Nx;i++){ // inner points
      file << setprecision(15) << u(i) << " ";
    }
    file << m_uN; // right boundary

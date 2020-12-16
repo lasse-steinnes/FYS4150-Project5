@@ -30,8 +30,8 @@ int main(int argc, char const *argv[]){
   int dim;
 
   if (method_solver == 1){ // Forward Euler
-    double T = 0.1;
-    double dx = 0.1;
+    double T = 20;
+    double dx = 0.01;
     double dt = dx*dx/3;
     int Lx = 1;
     double u0 = 0;
@@ -44,7 +44,7 @@ int main(int argc, char const *argv[]){
   }
 
   if (method_solver == 2){ // Implicit Euler
-    double T = 0.1;
+    double T = 20;
     double dx = 0.1;
     double dt = dx*dx/3;
     int Lx = 1;
@@ -90,7 +90,7 @@ int main(int argc, char const *argv[]){
   }
 
   if (method_solver == 5){ // do implicitBE in 2D
-    double T = 0.1;
+    double T = 20;
     double h = 0.1;
     double dt = h*h/3;
     // set upper limits for x and y,
@@ -105,8 +105,8 @@ int main(int argc, char const *argv[]){
     double uNy = 0;
 
     // iteration specifications
-    int max_iter = 1e3;
-    double tol = 1e-5;
+    int max_iter = 10e3;
+    double tol = 1e-10;
 
     Implicit_BE Solver;
     Solver.initialize(T,dt,Lx,Ly,h,u0x,uNx,u0y,uNy);
@@ -122,5 +122,7 @@ double I(double x){
 
 double I_2D(double x, double y){
   // assumes scaled case with x,y in [0,1]
-  return exp(-((x-0.5)*(x-0.5) + (y - 0.5)*(y - 0.5))) ;// gauss curve
+  return 0.75*exp(-((x-0.5)/(0.2)*(x-0.5)/(0.2) + (y - 0.5)/0.2*(y - 0.5)/0.2));// gauss curve
+  //0.75 exp(-((x-0.5)/(0.2) (x-0.5)/(0.2)+(y-0.5)/(0.2) (y-0.5)/(0.2)))
+  // -0.0606 + exp(-((x-0.5)*(x-0.5) + (y - 0.5)*(y - 0.5)))
 }
