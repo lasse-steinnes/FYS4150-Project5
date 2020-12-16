@@ -20,3 +20,6 @@ plot:
 
 plot2:
 	python3 plot_amplification.py
+
+ani:
+	python3 animation.py

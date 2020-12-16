@@ -60,6 +60,8 @@ if dim == 1:
     plt.legend()
     plt.show()
 
+## save
+
 if dim == 2:
     # make a 2D plot
     #T = 0.1
@@ -88,9 +90,9 @@ if dim == 2:
     fig = plt.figure()
     ax = fig.gca(projection='3d')
 
-    print("u2d shape:",np.shape(u2D))
-    print("\n")
-    print("xy shape:",np.shape(X))
+    #print("u2d shape:",np.shape(u2D))
+    #print("\n")
+    #print("xy shape:",np.shape(X))
     # Plot the surface.
     surf = ax.plot_surface(X, Y, u2D,cmap=cm.coolwarm,
                        linewidth=0, antialiased=False)
