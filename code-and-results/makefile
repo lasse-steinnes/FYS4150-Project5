@@ -14,3 +14,6 @@ compile:
 
 execute:
 	./main.out
+
+plot:
+	python3 plot_sol.py

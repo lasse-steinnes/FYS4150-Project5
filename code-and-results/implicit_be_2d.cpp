@@ -49,6 +49,8 @@ vec Implicit_BE::solve(int max_iterations, double tol){
       jacobi_iteration_method(max_iterations, tol);
       u_n = u; // update mesh
   }
+  open_mesh_to_file(m_file_mesh);
+  write_mesh_to_file(m_file_mesh);
   return u;
 }
 

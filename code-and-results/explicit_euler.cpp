@@ -34,12 +34,11 @@ void Explicit_Euler::advance(){
 
 vec Explicit_Euler::solve(){ // solves the system in time
   // Uses advance to solve the system for inner mesh points in time
+  open_mesh_to_file(m_file_mesh);
   for (int n = 0; n < m_Nt;n++){
       advance();
-      cout << u << "\n";
-      cout << "hei" << "\n";
+      write_mesh_to_file(m_file_mesh);
   }
-  //cout << u_n;
   return u;
 }
 
@@ -113,8 +112,9 @@ void Explicit_Euler::open_mesh_to_file(ofstream&file){ // open file
 }
 
 void Explicit_Euler::write_mesh_to_file(ofstream&file){ // write u to file
-  for (int i = 0; i <= m_Nx;i++){
-    file << setprecision(15) << u(i);
-    file << "\n";
+  for (int i = 0; i <= m_Nx; i++){
+      file << setprecision(15) << u(i) << " ";
   }
+  file << "\n";
+
 } // remember to close file

@@ -13,18 +13,18 @@ void Implicit::init(double T, double dt, int Lx, double dx, double u0, double uN
 
     m_method = method;
     double x0 = 0.0;
-    m_Nx = m_Nx - 1; // redifining to number of internal grid points
+    m_Nx = m_Nx; // redifining to number of internal grid points
     m_dxdx = m_dx*m_dx;
 
-    m_a = zeros<vec>(m_Nx+1);
-    m_b = zeros<vec>(m_Nx+1);      //allocating the matrix vectors a,b and c
-    m_c = zeros<vec>(m_Nx+1);
+    m_a = zeros<vec>(m_Nx);
+    m_b = zeros<vec>(m_Nx);      //allocating the matrix vectors a,b and c
+    m_c = zeros<vec>(m_Nx);
 
 
-    /*u_n =  zeros<vec>(m_Nx+1);        // time n, redefined to only include inner points
-    u =  zeros<vec>(m_Nx+1);          // time n+1,redefined to only include inner points
-    m_rhs = zeros<vec>(m_Nx+1);        //allocating the right hand side of lin. system
-    m_x = zeros<vec>(m_Nx+1);*/          //allocating the grid points
+    u_n =  zeros<vec>(m_Nx);        // time n, redefined to only include inner points
+    u =  zeros<vec>(m_Nx);          // time n+1,redefined to only include inner points
+    m_rhs = zeros<vec>(m_Nx);        //allocating the right hand side of lin. system
+    m_x = zeros<vec>(m_Nx);         //allocating the grid points
 
     for (int i = 0; i < m_Nx; i++){
       m_x(i) = x0 + (i+1)*m_dx;       //filling the grid points from (0, 1),
@@ -107,9 +107,11 @@ void Implicit::advance(){
 
 vec Implicit::solve(){
 // method to advance in time and space, uses the advance method
+  open_mesh_to_file(m_file_mesh);
   if (m_method == 1){       // implicit euler
     for (int n = 0; n < m_Nt;n++){
       advance();
+      write_mesh_to_file(m_file_mesh);
       BE_setup_system();
     }
   }
@@ -117,6 +119,7 @@ vec Implicit::solve(){
   if (m_method == 2){     //  crank nicolson
     for (int n = 0; n < m_Nt;n++){
       advance();
+      write_mesh_to_file(m_file_mesh);
       CN_setup_system();
     }
   }
@@ -185,13 +188,10 @@ void Implicit::open_mesh_to_file(ofstream&file){ // open file
 }
 
 void Implicit::write_mesh_to_file(ofstream&file){ // write u to file
-  file << m_u0 << "\n"; // left BC
-
+  file << m_u0 << " "; // left BC
   for (int i = 1; i < m_Nx;i++){ // inner points
-    file << setprecision(15) << u(i);
-    file << "\n";
-
-  file << m_uN; // right boundary
-
+    file << setprecision(15) << u(i) << " ";
   }
+  file << m_uN; // right boundary
+  file << "\n";
 } // remember to close file
