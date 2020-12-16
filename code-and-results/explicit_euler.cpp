@@ -40,7 +40,6 @@ vec Explicit_Euler::solve(){ // solves the system in time
       write_mesh_to_file(m_file_mesh);
   }
   m_file_mesh.close();
-  cout << u;
   return u;
 }
 

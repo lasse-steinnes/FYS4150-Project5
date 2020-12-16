@@ -125,7 +125,6 @@ void Implicit::advance(){
    }
    //cout << u;
    m_file_mesh.close();
-   cout << u;
    return u;
  }
 

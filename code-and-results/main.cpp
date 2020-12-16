@@ -30,8 +30,8 @@ int main(int argc, char const *argv[]){
   int dim;
 
   if (method_solver == 1){ // Forward Euler
-    double T = 0.1;
-    double dx = 0.01;
+    double T = 1;
+    double dx = 0.1;
     double dt = dx*dx/3;
     int Lx = 1;
     double u0 = 0;
@@ -44,8 +44,8 @@ int main(int argc, char const *argv[]){
   }
 
   if (method_solver == 2){ // Implicit Euler
-    double T = 0.1;
-    double dx = 0.01;
+    double T = 1;
+    double dx = 0.1;
     double dt = dx*dx/3;
     int Lx = 1;
     double u0 = 0;
@@ -57,8 +57,8 @@ int main(int argc, char const *argv[]){
   }
 
   if (method_solver == 3){ // Crank-Nicolson
-    double T = 0.1;
-    double dx = 0.01;
+    double T = 1;
+    double dx = 0.1;
     double dt = dx*dx/3;
     int Lx = 1;
     double u0 = 0;
