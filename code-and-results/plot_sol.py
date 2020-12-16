@@ -19,6 +19,7 @@ if dim == 1:
     u_BE = np.loadtxt(infile_BE)
     u_CN = np.loadtxt(infile_CN)
 
+
     x = np.linspace(0,1,Nx+1)
     t_array = np.linspace(0,0.1,Nt+1)
 
@@ -34,28 +35,25 @@ if dim == 1:
     uxt_an = u(x)
 
 
-
     plt.figure()
-    plt.plot(x,u_FE[int(Nt/5),:], label = 't1')
-    plt.plot(x,u_FE[-1,:], label = 't2')
+    plt.plot(x,u_FE[int(Nt/5),:], label = 'Forward Euler t1')
+    plt.plot(x,u_BE[int(Nt/5),:], label = 'Implicit Backward t1')
+    plt.plot(x,u_CN[int(Nt/5),:], label = 'Crank-Nicholson t1')
     plt.plot(x,uxt_an, label = 'analytical expression')
-    plt.title('Forward Euler solution')
+    plt.title('Method comparison for time t1')
     plt.legend()
 
-    plt.figure()
-    plt.plot(x,u_BE[int(Nt/5),:], label = 't1')
-    plt.plot(x,u_BE[-1,:], label = 't2')
-    plt.plot(x,uxt_an, label = 'analytical expression')
-    plt.title('Implisit backward solution')
-    plt.legend()
 
     plt.figure()
-    plt.plot(x,u_CN[int(Nt/5),:], label = 't1')
-    plt.plot(x,u_CN[-1,:], label = 't2')
+    plt.plot(x,u_FE[-1,:], label = 'Forward Euler $t_2$')
+    plt.plot(x,u_BE[-1,:], label = 'Implicit Backward t2')
+    plt.plot(x,u_CN[-1,:], label = 'Crank-Nicholson t2')
     plt.plot(x,uxt_an, label = 'analytical expression')
-    plt.title('Crank-Nicholson solution')
+    plt.title('Method comparison for time t2')
     plt.legend()
+
     plt.show()
+
 
 if dim == 2:
     #plott 2D
