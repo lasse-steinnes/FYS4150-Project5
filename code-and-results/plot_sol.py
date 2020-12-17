@@ -9,7 +9,8 @@ dim = int(input("Want to plot 1D or 2D solution (1/2)?: "))
 if dim == 1:
     Nx = int(input("Set Nx (int):")) # 100
     Nt =  int(input("Set Nt (int):"))# 3000
-    T = float(input("Set T (float):")) # 0.1
+    t2 = 1.0
+    dx = 1/Nx
 
     infile_FE = open("./results/1D-solutions/" + "1Dsol-Nx-" + str(Nx) + "-Nt-" + str(Nt) +  "-FE.txt", "r")
     infile_BE = open("./results/1D-solutions/" + "1Dsol-Nx-" + str(Nx) + "-Nt-" + str(Nt) +  "-BE.txt", "r")
@@ -25,11 +26,13 @@ if dim == 1:
 
 
     x = np.linspace(0,1,Nx+1)
-    t_array = np.linspace(0,0.1,Nt+1)
-
+    t_array = np.linspace(0,t2,Nt+1)
+    t1 = t_array[int(Nt/5)]
+    print(t1)
 
     def u(x):
         sum = 0
+        T = 10
         N = int(1e5)
         for n in range(1,N):
             sum += (((-1)**(n))/n)*np.sin(n*np.pi*x)*np.exp(-T*(n*np.pi)**2)
@@ -40,25 +43,32 @@ if dim == 1:
 
 
     plt.figure()
-    plt.plot(x,u_FE[int(Nt/5),:], label = 'Forward Euler t1')
-    plt.plot(x,u_BE[int(Nt/5),:], label = 'Implicit Backward t1')
-    plt.plot(x,u_CN[int(Nt/5),:], label = 'Crank-Nicholson t1')
-    plt.plot(x,uxt_an, label = 'analytical expression')
-    plt.title('Method comparison for time t1',fontsize = 14)
-    plt.legend(fontsize = 11)
-    plt.xticks(fontsize=13)
-    plt.yticks(fontsize=13)
-    plt.savefig("./results/figures/1d-sol/1d-Nx-{:d}-Nt-{:d}-t1.png".format(Nx,Nt))
+    plt.plot(x,u_FE[int(Nt/5),:], label = 'Forward Euler solution at $t_1$')
+    plt.plot(x,u_BE[int(Nt/5),:], label = 'Implicit Backward solution at $t_1$')
+    plt.plot(x,u_CN[int(Nt/5),:], label = 'Crank-Nicholson solution at $t_1$')
+    plt.plot(x,uxt_an, label = 'Analytical solution $u(x,t)$, at t = 10')
+    plt.xlabel('x',fontsize = 13)
+    plt.ylabel('$u(x,t)$',fontsize = 13)
+    plt.title('Numerical solutions at time $t_1 = 0.2$ and $\Delta x$ = 0.01',fontsize = 14)
+    plt.legend()
+    plt.xticks(fontsize=14)
+    plt.yticks(fontsize=14)
+    plt.savefig("./results/figures/FE_BE_CN_t1={:2f}dx={:2f}.png".format(t1,dx))
 
 
     plt.figure()
-    plt.plot(x,u_FE[-1,:], label = 'Forward Euler $t_2$')
-    plt.plot(x,u_BE[-1,:], label = 'Implicit Backward t2')
-    plt.plot(x,u_CN[-1,:], label = 'Crank-Nicholson t2')
-    plt.plot(x,uxt_an, label = 'analytical expression')
-    plt.title('Method comparison for time t2',fontsize = 14)
-    plt.legend(fontsize = 11)
-    plt.savefig("./results/figures/1d-sol/1d-Nx-{:d}-Nt-{:d}-t2.png".format(Nx,Nt))
+    plt.plot(x,u_FE[-1,:], label = 'Forward Euler solution at $t_2$')
+    plt.plot(x,u_BE[-1,:], label = 'Implicit Backward solution at $t_2$')
+    plt.plot(x,u_CN[-1,:], label = 'Crank-Nicholson solution at $t_2$')
+    plt.plot(x,uxt_an, label = 'Analytical solution $u(x,t)$, at t = 10')
+    plt.xlabel('x',fontsize = 13)
+    plt.ylabel('$u(x,t)$',fontsize = 13)
+    plt.title('Numerical solutions at time $t_2 = 1.0$ and $\Delta x$ = 0.01',fontsize = 14)
+    plt.legend()
+    plt.xticks(fontsize=14)
+    plt.yticks(fontsize=14)
+    plt.savefig("./results/figures/FE_BE_CN_t2={:2f}dx={:2f}.png".format(t2,dx))
+
     plt.show()
 
 if dim == 2:

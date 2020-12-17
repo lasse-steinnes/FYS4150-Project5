@@ -125,21 +125,21 @@ void Implicit::advance(){
    }
    //cout << u;
    m_file_mesh.close();
-   //cout << u;
    return u;
  }
 
  void Implicit::open_mesh_to_file(ofstream&file){ // open file
    // open spin to file if true
+   int m_Nx_new = m_Nx + 1;
    if (m_method == 1){
    string filename(string("./results/1D-solutions/") +  \
-                   "1Dsol-Nx-" + to_string(m_Nx) + "-Nt-" + to_string(m_Nt) + "-BE.txt");
+                   "1Dsol-Nx-" + to_string(m_Nx_new) + "-Nt-" + to_string(m_Nt) + "-BE.txt");
    file.open(filename);
    }
 
    if (m_method == 2){
      string filename(string("./results/1D-solutions/") +  \
-                     "1Dsol-Nx-" + to_string(m_Nx) + "-Nt-" + to_string(m_Nt) + "-CN.txt");
+                     "1Dsol-Nx-" + to_string(m_Nx_new) + "-Nt-" + to_string(m_Nt) + "-CN.txt");
      file.open(filename);
    }
 
