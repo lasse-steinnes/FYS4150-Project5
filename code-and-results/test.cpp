@@ -7,7 +7,7 @@
 using namespace arma;
 using namespace std;
 
-TEST_CASE("Testing 1D in stationary limit") {
+TEST_CASE("Testing 1D in stationary limit"){
 
   /*
   test the 1D methods in the
@@ -52,15 +52,16 @@ TEST_CASE("Testing 1D in stationary limit") {
   vec u_ana = linspace<vec>(0,Lx,Nx+1);
 
   // Comparing analyical with numerical with tolerance
-  double tol = 1E-15;
+  double tol = 1E-14;
   for (int i = 0; i < Nx;i++){
     REQUIRE(abs(u_FE(i) - u_ana(i)) < tol);
-  };
+  }
+
   for (int i = 1; i < Nx;i++){
     REQUIRE(abs(u_BE(i-1) - u_ana(i)) < tol);
     REQUIRE(abs(u_CN(i-1) - u_ana(i)) < tol);
   }
-}
+};
 
 TEST_CASE("Testing 2D in stationary limit"){
 
@@ -109,4 +110,4 @@ TEST_CASE("Testing 2D in stationary limit"){
   for (int i = 0; i < (Nh+1)*(Nh+1) ;i++){
       REQUIRE(abs(u_num(i) - u_ana(i)) < test_tol);
     }
-}
+};

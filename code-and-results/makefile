@@ -12,7 +12,6 @@
 #plot2:
 	#python3 plot_amplification.py
 
-
 all: compile execute
 
 compile:
