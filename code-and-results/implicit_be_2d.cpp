@@ -5,6 +5,7 @@
 #include <chrono>
 #include <cmath>
 #include <iomanip>
+#include <omp.h>
 
 using namespace arma;
 using namespace std;
@@ -27,6 +28,9 @@ void Implicit_BE::jacobi_iteration_method(int max_iterations, double tol){
  // scheme
  while (iterations <= max_iterations){
     u_temp = u; diff = 0.0;
+    // parallelize region using four (4) nodes
+    //#pragma omp parallel for default(shared) num_threads(4) private(temps_i)
+
     for (int i = 1; i < m_Nx; i++){
         for (int j = 1; j < m_Ny; j++){
             double delta_ij = u_temp((j+1)*m_k + i) + u_temp((j-1)*m_k + i) \
@@ -41,12 +45,16 @@ void Implicit_BE::jacobi_iteration_method(int max_iterations, double tol){
 
 vec Implicit_BE::solve(int max_iterations, double tol){
   // Advance in time
+  auto start = chrono::high_resolution_clock::now(); // Start timer
   for (int n = 0; n < m_Nt;n++){
       jacobi_iteration_method(max_iterations, tol);
       u_n = u; // update mesh
   }
+  auto finish = chrono::high_resolution_clock::now(); // End timer
   open_mesh_to_file(m_file_mesh);
   write_mesh_to_file(m_file_mesh);
+  chrono::duration<double, std::milli> time_ms = finish - start; //get in milliseconds
+  cout << "BE (2D) took" << " " <<  time_ms.count() << " " << "milliseconds \n";
   m_file_mesh.close();
   return u;
 }

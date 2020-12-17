@@ -115,12 +115,17 @@ void Implicit::advance(){
  vec Implicit::solve(){
  // method to advance in time and space, uses the advance method
  open_mesh_to_file(m_file_mesh);
+ auto start = chrono::high_resolution_clock::now(); // Start timer
+
    if (m_method == 1){       // implicit euler
      for (int n = 0; n < m_Nt;n++){
        advance();
        write_mesh_to_file(m_file_mesh);
        BE_setup_system();
      }
+     auto finish = chrono::high_resolution_clock::now(); // End timer
+     chrono::duration<double, std::milli> time_ms = finish - start; //get in milliseconds
+     cout << "BE took" << " " << time_ms.count() << " " << "milliseconds \n";
    }
 
    if (m_method == 2){     //  crank nicolson
@@ -129,7 +134,11 @@ void Implicit::advance(){
        write_mesh_to_file(m_file_mesh);
        CN_setup_system();
      }
+     auto finish = chrono::high_resolution_clock::now(); // End timer
+     chrono::duration<double, std::milli> time_ms = finish - start; //get in milliseconds
+     cout << "CN took" << " " << time_ms.count() << " " << "milliseconds \n";
    }
+
    m_file_mesh.close();
    return u;
  }

@@ -5,7 +5,6 @@
 #include "finitediffs2d.hpp"
 #include <iostream>
 #include <armadillo>
-#include <omp.h>
 #include <stdio.h>
 #include <cmath>
 #include <chrono>
@@ -18,7 +17,7 @@ double I(double x);
 double I_2D(double x, double y);
 
 int main(int argc, char const *argv[]){
-  Catch::Session().run();  // testing some numerical cases vs analytical results
+  //Catch::Session().run();  // testing some numerical cases vs analytical results
 
   int method_solver;
   cout << "Press 1 to run explicit Euler \n";
@@ -47,8 +46,8 @@ int main(int argc, char const *argv[]){
   if (method_solver == 2){ // Implicit Euler
     double T = 1;
     double dx = 0.1;
-    //double dt = dx*dx/3;
-    double dt = dx*dx;
+    double dt = dx*dx/3;
+    //double dt = dx*dx;
     int Lx = 1;
     double u0 = 0;
     double uN = 1;
@@ -61,8 +60,8 @@ int main(int argc, char const *argv[]){
   if (method_solver == 3){ // Crank-Nicolson
     double T = 1;
     double dx = 0.1;
-    //double dt = dx*dx/3;
-    double dt = dx*dx;
+    double dt = dx*dx/3;
+    //double dt = dx*dx;
     int Lx = 1;
     double u0 = 0;
     double uN = 1;
@@ -95,7 +94,6 @@ int main(int argc, char const *argv[]){
     Solver.initialize(T,dt,Lx,Ly,h,u0x,uNx,u0y,uNy);
     Solver.set_initial(I_2D);
     vec u = Solver.solve(max_iter, tol);
-
   }
   return 0;
 }

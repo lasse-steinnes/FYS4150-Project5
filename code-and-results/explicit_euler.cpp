@@ -35,10 +35,16 @@ void Explicit_Euler::advance(){
 vec Explicit_Euler::solve(){ // solves the system in time
   // Uses advance to solve the system for inner mesh points in time
   open_mesh_to_file(m_file_mesh);
+  auto start = chrono::high_resolution_clock::now(); // Start timer
+
   for (int n = 0; n < m_Nt;n++){
       advance();
       write_mesh_to_file(m_file_mesh);
   }
+
+  auto finish = chrono::high_resolution_clock::now(); // End timer
+  chrono::duration<double, std::milli> time_ms = finish - start; //get in milliseconds
+  cout << "FE took"  << " " << time_ms.count() << " " << "milliseconds \n";
   m_file_mesh.close();
   return u;
 }

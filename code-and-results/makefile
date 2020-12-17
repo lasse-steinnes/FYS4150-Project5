@@ -1,3 +1,5 @@
+##### makefile alternative 1 #####
+
 #all: compile execute
 
 #compile:
@@ -12,6 +14,7 @@
 #plot2:
 	#python3 plot_amplification.py
 
+##### Makefile alternative 2 #####
 all: compile execute
 
 compile:
