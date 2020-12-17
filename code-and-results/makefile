@@ -1,18 +1,20 @@
 ##### makefile alternative 1 #####
-
 #all: compile execute
 
 #compile:
-	#g++-10 -o main.out $(wildcard *.cpp) -larmadillo -std=c++11 -fopenmp -Ofast
+#	g++-10 -o main.out $(wildcard *.cpp) -larmadillo -std=c++11 -fopenmp -Ofast
 
 #execute:
-	#./main.out
+#	./main.out
 
 #plot:
-	#python3 plot_sol.py
+#	python3 plot_sol.py
 
 #plot2:
-	#python3 plot_amplification.py
+#	python3 plot_amplification.py
+
+#ani:
+#	python3 animation.py
 
 ##### Makefile alternative 2 #####
 all: compile execute

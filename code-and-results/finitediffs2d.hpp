@@ -44,8 +44,8 @@ class Implicit_BE : public Diffusion_Solver2D{
 
 public:
   void set_initial(double I(double x, double y)); // Set the initial condition
-  void jacobi_iteration_method(int max_iterations, double tol); // iterate and stop for given tolerance
-  vec solve(int max_iterations, double tol);  // using jacobi iteration at each time step
+  void jacobi_iteration_method(int max_iterations, int numthreads); // iterate and stop for given tolerance
+  vec solve(int max_iterations, int numthreads);  // using jacobi iteration at each time step
   void open_mesh_to_file(ofstream&file);
   void write_mesh_to_file(ofstream&file); // write solution to file
 };

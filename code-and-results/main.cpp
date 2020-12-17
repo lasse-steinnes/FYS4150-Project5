@@ -73,7 +73,7 @@ int main(int argc, char const *argv[]){
   }
 
   if (method_solver == 4){ // ImplicitBE in 2D
-    double T = 20;
+    double T = 0.01;
     double h = 0.1;
     double dt = h*h/3;
 
@@ -88,12 +88,12 @@ int main(int argc, char const *argv[]){
 
     // iteration specifications
     int max_iter = 10e3;
-    double tol = 1e-10;
+    int threads = 1;
 
     Implicit_BE Solver;
     Solver.initialize(T,dt,Lx,Ly,h,u0x,uNx,u0y,uNy);
     Solver.set_initial(I_2D);
-    vec u = Solver.solve(max_iter, tol);
+    vec u = Solver.solve(max_iter,threads);
   }
   return 0;
 }
