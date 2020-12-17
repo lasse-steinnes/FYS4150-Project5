@@ -32,7 +32,8 @@ int main(int argc, char const *argv[]){
   if (method_solver == 1){ // Forward Euler
     double T = 1;
     double dx = 0.1;
-    double dt = dx*dx/3;
+    //double dt = dx*dx/3;
+    double dt = dx*dx;
     int Lx = 1;
     double u0 = 0;
     double uN = 1;
@@ -46,7 +47,8 @@ int main(int argc, char const *argv[]){
   if (method_solver == 2){ // Implicit Euler
     double T = 1;
     double dx = 0.1;
-    double dt = dx*dx/3;
+    //double dt = dx*dx/3;
+    double dt = dx*dx;
     int Lx = 1;
     double u0 = 0;
     double uN = 1;
@@ -59,7 +61,8 @@ int main(int argc, char const *argv[]){
   if (method_solver == 3){ // Crank-Nicolson
     double T = 1;
     double dx = 0.1;
-    double dt = dx*dx/3;
+    //double dt = dx*dx/3;
+    double dt = dx*dx;
     int Lx = 1;
     double u0 = 0;
     double uN = 1;
