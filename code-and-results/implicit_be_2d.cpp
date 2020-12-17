@@ -21,27 +21,21 @@ void Implicit_BE::set_initial(double I(double x, double y)){
 
 void Implicit_BE::jacobi_iteration_method(int max_iterations, double tol){
  // Jacobi iteration for spatial solution at a specific time
- // u_temp = zeros<vec>((m_Nx +1)*(m_Ny + 1)); // Temporal array for iterative method,
- // Setting u_temp to zero (could start random as well (might converge faster))
  double diff;
  int nn = m_Nx*m_Ny;
  int iterations = 0;
  // scheme
- while (iterations <= max_iterations){ //  && (diff > tol)
+ while (iterations <= max_iterations){
     u_temp = u; diff = 0.0;
     for (int i = 1; i < m_Nx; i++){
         for (int j = 1; j < m_Ny; j++){
             double delta_ij = u_temp((j+1)*m_k + i) + u_temp((j-1)*m_k + i) \
                               + u_temp(j*m_k + (i-1)) + u_temp(j*m_k + (i+1));
             u(j*m_k + i) = 1/((double) 1+4*m_s)*(m_s*delta_ij + u_n(j*m_k + i));
-
-            //diff += fabs(u(j*m_k + i) - u_temp(j*m_k + i)); // accumulative difference (too small for values between 0 an 1)
-            }
           }
        iterations ++;
-       //diff /= ((double) nn);
      }
-  //cout << diff << "\n";
+   } // end while
 }
 
 
@@ -54,7 +48,6 @@ vec Implicit_BE::solve(int max_iterations, double tol){
   open_mesh_to_file(m_file_mesh);
   write_mesh_to_file(m_file_mesh);
   m_file_mesh.close();
-  //cout << u;
   return u;
 }
 

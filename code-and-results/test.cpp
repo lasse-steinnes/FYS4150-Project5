@@ -1,5 +1,6 @@
 #include "catch.hpp"
 #include "finitediffs.hpp"
+#include "finitediffs2d.hpp"
 #include <iostream>
 #include <armadillo>
 
@@ -38,22 +39,19 @@ TEST_CASE("Testing 1D in stationary limit") {
   // Backward euler
   method = 1;
   Implicit Solver2;
-  Solver2.init(T,dt,Lx,dx,u0,uN,method);
+  Solver2.init(I,T,dt,Lx,dx,u0,uN,method);
   u_BE = Solver2.solve();
 
   // Crank-Nicolson
   method = 2;
   Implicit Solver3;
-  Solver3.init(T,dt,Lx,dx,u0,uN,method);
+  Solver3.init(I,T,dt,Lx,dx,u0,uN,method);
   u_CN = Solver3.solve();
 
-  /* Analytical expressions */
-
-  vec u_ana = linspace<vec>(0,Lx,Nx+1);  // analytical mesh point
+  /* Analytical expression in the stationary limit */
+  vec u_ana = linspace<vec>(0,Lx,Nx+1);
 
   // Comparing analyical with numerical with tolerance
-  // Is there a better way to do this? Catch doesnt provide array
-  // testing with tolerance (?)
   double tol = 1E-15;
   for (int i = 0; i < Nx;i++){
     REQUIRE(abs(u_FE(i) - u_ana(i)) < tol);
@@ -65,8 +63,14 @@ TEST_CASE("Testing 1D in stationary limit") {
 }
 
 TEST_CASE("Testing 2D in stationary limit"){
-/* first draft
-  auto I = [](double x) { // initial condition
+
+  /*
+  test the 2D Implicit (Backward) Euler method in the
+  stationary limit u(x,t) = 0.
+  */
+
+  /* Numerical results */
+  auto I_2D = [](double x, double y) { // initial condition
         return  0.75*exp(-((x-0.5)/(0.2)*(x-0.5)/(0.2) + (y - 0.5)/0.2*(y - 0.5)/0.2));
       };
 
@@ -83,16 +87,26 @@ TEST_CASE("Testing 2D in stationary limit"){
   double u0y = 0;
   double uNy = 0;
 
-  double Nh = round(Lx/((double) dx)); // number of spatial iterations
-  vec u_ana
+  // Get number of intervals for one dimension
+  double Nh = round(Lx/((double) h));
+
   // iteration specifications
   int max_iter = 10e3;
   double tol = 1e-10;
 
+  // solve numerically
   Implicit_BE Solver;
   Solver.initialize(T,dt,Lx,Ly,h,u0x,uNx,u0y,uNy);
   Solver.set_initial(I_2D);
-  vec u = Solver.solve(max_iter, tol);
-*/
+  vec u_num = Solver.solve(max_iter, tol); // u is a flattened matrix
 
+
+  /* Analytical solution in stationary limit */
+  vec u_ana = zeros<vec>((Nh+1)*(Nh+1));
+
+  //   checking u_num = 0 in stationary limit within tolerance
+  double test_tol = 1E-15;
+  for (int i = 0; i < (Nh+1)*(Nh+1) ;i++){
+      REQUIRE(abs(u_num(i) - u_ana(i)) < test_tol);
+    }
 }

@@ -40,68 +40,9 @@ vec Explicit_Euler::solve(){ // solves the system in time
       write_mesh_to_file(m_file_mesh);
   }
   m_file_mesh.close();
-  cout << u;
   return u;
 }
 
-void Explicit_Euler::convergence_rate(double I(double x),int N_experiments){ // get convergence rate for FE
-// make sure stability criteria is being met?
-  double T = 10.0;
-  double dx = 0.2;
-  double dt = dx*dx/3; // let it be on stability criteria
-  int Lx = 1;
-  double u0 = 0;
-  double uN = 1;
-  int steps = 0;
-  double error,next_error;
-
-  // initializing vectors
-  vec numpoints = zeros<vec>(N_experiments); // number of time steps
-  vec E = zeros<vec>(N_experiments);  // error vector
-  vec h = zeros<vec>(N_experiments);  // step size dt
-  vec r = zeros<vec>(N_experiments);  // convergence rate vector
-  r(N_experiments-1)= 0.0;
-
-  while (steps < N_experiments){
-      init(T,dt,Lx,dx,u0,uN);
-      set_initial(I);
-      vec u_num = solve();
-      //cout << (m_x-u_num) << "\n";
-      // try to use max-norm instead maybe,
-
-      error = 0.0;
-      /* L2 norm
-      for (int i = 0; i < m_Nx; i++){    //For all time steps
-        next_error =  m_x(i) - u_num(i);   //Calulating the error.
-        error = error + next_error*next_error;
-        }
-        */
-      //Supremum norm
-      for (int i = 0; i < m_Nx; i++){    //For all time steps
-        next_error =  m_x(i) - u_num(i);   //Calulating the error.
-        error = max(next_error,error);
-      }
-
-      E(steps) = sqrt(m_dt*error);
-      h(steps) = m_dt;
-      numpoints(steps) = m_Nt;
-      dt = m_dt/((double) 2); // update step size
-      dx =  sqrt(3*dt);//2
-      steps += 1;
-      }
-
-
-  // get convergence rate
-  for (int j = 1; j < N_experiments; j++){
-      r(j) = log10(E(j)/E(j-1))/((double) log10(h(j)/h(j-1)));
-    }
-
-  cout  << "Convergence rates:\n"  << r <<"\n";
-  cout << "L2-norm:\n"  << E << "\n";
-  //cout << "step size:\n" << h << "\n";
-}
-
-// could also add a write error to file in superclass
 
 void Explicit_Euler::open_mesh_to_file(ofstream&file){ // open file
   // open spin to file if true

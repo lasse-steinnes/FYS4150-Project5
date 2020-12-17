@@ -40,7 +40,6 @@ public:
   void set_initial(double I(double x)); // set up the inital condition
   void advance(); // for all steps
   vec solve(); // solves the system in time
-  void convergence_rate(double I(double x), int N_experiments); // method to get convergence rate FE
   void open_mesh_to_file(ofstream&file); // open file
   void write_mesh_to_file(ofstream&file); // write solution to file
 
@@ -55,7 +54,8 @@ protected:
   int m_method; // choose which method to use
 
 public:
-  void init(double T, double dt, int Lx, double dx, double u0, double uN, int method); // if an init needed here, using initialize
+  void init(double I(double x), double T, double dt, int Lx, double dx, double u0, double uN, int method); // if an init needed here, using initialize
+  void set_initial(double I(double x));
   void set_fourier();
   void BE_setup_system(); // Need to do this for every time step!
   void CN_setup_system();
@@ -63,7 +63,6 @@ public:
   void backward_substition();
   void advance(); // Choose here what method to use implicit euler or CN
   vec solve();
-  void convergence_rate(int N_experiments, int method); // method to get convergence rate BE and CN
   void open_mesh_to_file(ofstream&file); // open file
   void write_mesh_to_file(ofstream&file); // write solution to file
 };
