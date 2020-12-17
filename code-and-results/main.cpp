@@ -17,7 +17,7 @@ double I(double x);
 double I_2D(double x, double y);
 
 int main(int argc, char const *argv[]){
-  //Catch::Session().run();  // testing some numerical cases vs analytical results
+  Catch::Session().run();  // testing some numerical cases vs analytical results
 
   int method_solver;
   cout << "Press 1 to run explicit Euler \n";

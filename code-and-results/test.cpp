@@ -93,13 +93,13 @@ TEST_CASE("Testing 2D in stationary limit"){
 
   // iteration specifications
   int max_iter = 10e3;
-  double tol = 1e-10;
+  int threads = 1;
 
   // solve numerically
   Implicit_BE Solver;
   Solver.initialize(T,dt,Lx,Ly,h,u0x,uNx,u0y,uNy);
   Solver.set_initial(I_2D);
-  vec u_num = Solver.solve(max_iter, tol); // u is a flattened matrix
+  vec u_num = Solver.solve(max_iter, threads); // u is a flattened matrix
 
 
   /* Analytical solution in stationary limit */
