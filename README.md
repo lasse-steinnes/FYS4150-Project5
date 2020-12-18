@@ -37,31 +37,28 @@ Git for Project 5 in Computational Physics (FYS4150).
   8. solve: Advances the system multiple moments in time by calling the method advance Nt times. For every advancement it sets up the system by calling either BN_setup_system or CN_setup_system depending on the numerical method applied. Numerical solutions are also written to file here.
   9. The other methods provided are write to file methods.
 
-- [finitediffs2d.hpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/finitediffs2d.hpp) Headerfile for the superclass Diffusion_Solver2D for 2 dimensions, with subclasses Implicit_BE.
-- [finitediffs2d.cpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/finitediffs2d.cpp) 
-- [plotspin.py](https://github.com/Seedsiz/FYS4150-Project4/blob/main/code-and-results/plotspin.py) makes a heatmap of the final spin configuration for a given temperature.
-- [plotexpvalues.py](https://github.com/Seedsiz/FYS4150-Project4/blob/main/code-and-results/plotexpvalues.py) plots the heat capacity, magnetic susceptibility and other parameters of the system.
-- [plottime.py](https://github.com/Seedsiz/FYS4150-Project4/blob/main/code-and-results/plottime.py) makes a plot for different runtime with and without flags/parallelization.
+- [finitediffs2d.hpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/finitediffs2d.hpp) Headerfile for the superclass Diffusion_Solver2D for 2 dimensions, with subclass Implicit_BE.
+- [finitediffs2d.cpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/finitediffs2d.cpp) Provides the superclass method initialize, which initializes the system with number of spatial grid points Nx and Ny and number of time simulations Nt. It also defines the vectors x and y in the 2D plane. In addition the boundary conditions are determined for both the boundaries on x and y.
+- [implicit_be_2d](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/implicit_be_2d.cpp) The subclass of the superclass Diffusion_Solver2D which solves the 2-dimensional diffusion equation using the implicit backward euler. Subclass methods provided are given in following order
+  1. set_initial: Initializes the solution vector u_n for the 2-dimensional diffusion equation with zero everywhere, expcept at the boundaries which are determined using the superclass method initialize from finitediffs2d.cpp.
+  2. jacobi_iteration_method: Applying jacobi's algorithm in order to find the new solution vector u for a given moment in time. 
+  3. solve: Solving the diffusion equation by calling jacobi_iteration_method Nt times and update the new solution vector u each time. 
+  4. The other methods provided are write to file methods.
+ 
+ - [plot_sol.py](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/plot_sol.py) Plots the 1D solutions for all three numerical methods together with the analytical stationary state to compare. The file also plots the 2D solution for the implicit backward euler method.
+- [plot_amplification.py](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/plot_amplification.py) Makes a plot of the amplification factor for all three numerical methods in 1D, along with the amplification factor for the analytical solution in 1D.
+ - [animation.py](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/animation.py) Makes an animation of the 2D solution in time.
+- [test.cpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/plot_amplification.py) testing something
+
 
 The files can be compiled with "make all". And plots can be generated with "make argument."
 
-How to run the programmes to reproduce the results discussed in the article: The menu provides user input on the following variables
-  1. Integer number of spin particles for an axis, eg. 2,20,40,60,80,100
-  2. Start point temperature, eg. 1
-  3. Endpoint temperature, eg. 2.4
-  4. Integer number of temperature points to be evaluated within a thread, eg. 10
-  5. integer number of MC cycles, eg. 100 thousands or 1-10 million to get a good result
-  6. Enter integer number of calibration cycles, 20 000 to be on the safe side.
-  7. Enter integer number of threads (1 if not parallelization wanted), a value between 1-4.
-
-After experimentation with the MC cycles, the authors decided to use 20 000 calibration cycles, to get more accurate expectation values for less number of cycles. This ensures also good results for larger spin systems and higher temperatures, which needs more calibration cycles compared to lower temperatures and smaller spin system. If one want to plot more than just expectation values, one must go in the isingmodel.cpp to decomment variables m_accepted, E_cycles and M_cycles. Then you must set the bool objects to true.
+How to run the programmes to reproduce the results discussed in the article: The menu provides user input for which numerical method you want to apply in order to solve the diffusion equation. It also asks whether or not you want to run the program for either 1 or 2 dimensions.
 
 ### Links and packages
 - The Mersenne Twister (pseudo)random number generator was used in generating uniform distribution to draw indices and acceptance criteria. Documentation on the class mt19937_64 can be found [here.](https://www.cplusplus.com/reference/random/mt19937_64/)
 
 - Documentation for Matplotlib from python from [here](https://matplotlib.org/)
-
-- Documentation on seaborn displot [here](https://seaborn.pydata.org/generated/seaborn.displot.html#seaborn.displot) and heatmaps [here](https://seaborn.pydata.org/generated/seaborn.heatmap.html)
 
 - Documentation on pandas dataframes can be found [here](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html)
 
