@@ -76,7 +76,7 @@ if dim == 2:
     Nx = int(input("Set Nx (int):")) # 10
     Ny = int(input("Set Ny (int):")) # 10
     Nt = int(input("Set Nt (int):")) # 6000
-
+    want_ana = int(input("Also plot analytical (sine IC)? (0/1):"))
 
     infile_2DBE = open("./results/2D-solutions/" + "2Dsol-Nx-" + str(Nx) + "-Ny-" + str(Ny) + "-Nt-" + str(Nt) +  "-BE.txt", "r")
 
@@ -98,7 +98,18 @@ if dim == 2:
 
     # Plot the surface.
     surf = ax.plot_surface(X, Y, u2D,cmap=cm.coolwarm,
-                       linewidth=0, antialiased=False)
+                       linewidth=0, antialiased=False, alpha = 0.5)
+
+    # plot analytical solution if want_ana = 1
+    if want_ana == 1:
+        #T_ = float(T[2:]) ## Total time if wanted same time
+        T_ = 0.02
+        x1 = np.linspace(0,1,1001)
+        y1 = np.linspace(0,1,1001)
+        X1,Y1 = np.meshgrid(x1,y1)
+        u_ana2D = 0.75*np.sin(np.pi*X1)*np.sin(np.pi*Y1)*np.exp(-2*np.pi**2*T_)
+        surf2 = ax.plot_surface(X1, Y1, u_ana2D,cmap=cm.viridis,
+                           linewidth=0, antialiased=False, alpha = 0.5)
 
     # Customize the z axis.
     ax.set_zlim(0, 0.8)

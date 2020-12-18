@@ -15,9 +15,10 @@ using namespace arma;
 
 double I(double x);
 double I_2D(double x, double y);
+double I_2Dsine(double x, double y);
 
 int main(int argc, char const *argv[]){
-  Catch::Session().run();  // testing some numerical cases vs analytical results
+  //Catch::Session().run();  // testing some numerical cases vs analytical results
 
   int method_solver;
   cout << "Press 1 to run explicit Euler \n";
@@ -73,9 +74,9 @@ int main(int argc, char const *argv[]){
   }
 
   if (method_solver == 4){ // ImplicitBE in 2D
-    double T = 0.01;
-    double h = 0.1;
-    double dt = h*h/3;
+    double T = 1.0;
+    double h = 0.01;
+    double dt = 0.1;
 
     int Lx = 1;
     int Ly = 1;
@@ -92,7 +93,7 @@ int main(int argc, char const *argv[]){
 
     Implicit_BE Solver;
     Solver.initialize(T,dt,Lx,Ly,h,u0x,uNx,u0y,uNy);
-    Solver.set_initial(I_2D);
+    Solver.set_initial(I_2Dsine);
     vec u = Solver.solve(max_iter,threads);
   }
   return 0;
@@ -105,4 +106,9 @@ double I(double x){ // zero initial conditino
 double I_2D(double x, double y){ // gauss curve initial condition
   // assumes scaled case with x,y in [0,1]
   return 0.75*exp(-((x-0.5)/(0.2)*(x-0.5)/(0.2) + (y - 0.5)/0.2*(y - 0.5)/0.2));
+}
+
+double I_2Dsine(double x, double y){
+  // saving time instead of calling M_PI
+  return 0.75*sin(3.14159265359*x)*sin(3.14159265359*y);
 }
