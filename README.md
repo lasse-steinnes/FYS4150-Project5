@@ -2,38 +2,43 @@
 Git for Project 5 in Computational Physics (FYS4150).
 
 ### Main overview
-* The programs in this repository aim at solving the Diffusion equation using three numerical methods, namely Explicit Forward Euler, Implicitt Backward Euler and the Crank-Nicholson method. The partial differential equation is solved in both 1 and 2 dimensions as described in the : [Project 5 - Solving the Diffusion equation ](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/report/Project-description-DiffusionEquation.pdf). The final report can be found at: [Aaby Rashid Steinnes - Project5](https://github.com/Seedsiz/FYS4150-Project4/blob/main/report/Aaby_Steinnes_Rashid_exploring_the_ising_model_report.pdf).
+* The programs in this repository aim at solving the Diffusion equation using three numerical methods, namely Explicit Forward Euler, Implicitt Backward Euler and the Crank-Nicholson method. The description for solving the Diffuision equation is described in : [Project 5 - Solving the Diffusion equation ](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/report/Project-description-DiffusionEquation.pdf). The final report can be found at: [Aaby Rashid Steinnes - Project5](https://github.com/Seedsiz/FYS4150-Project4/blob/main/report/Aaby_Steinnes_Rashid_exploring_the_ising_model_report.pdf).
 
-* The main challenge was to apply Monte Carlo simulations and the metropolis sampling algorithm to obtain expectation values and study phase transition for a 2D system. To do so a random number generator was used (see link below). In addition the algorithm was parallelized (over temperatures) using OpenMP. Each thread was regarded as a separate experiment, thus each thread has its own unique seed. The spin matrix is initialized once for each thread. For temperatures within that thread, the first Monte Carlo (MC) cycle of the next temperature uses the last spin configuration of the previous temperature.
+* The main challange is to solve the Diffusion equation both in 1 and 2 dimensions. The intuition of the problem can be thought of as finding the temperature gradient in a rod of length L = 1. For the 1D problem, the goal is to simulate over a significant good amount of time, so that the numerical solutions for the various methods approach a linear variation close to an analytical stationary solution of the problem. When implementing, different approaches to spatial steplength and timestep has been made, in order to study the resolution and stability of the different numerical methods.
 
-* Another central task was to verify the algorithm for a 2 by 2 matrix (numerical vs. analytical results), and check method performance with/without parallelization. 
+* For 2 dimensions, the implicit backward euler method was applied. Both dimensions are equally long and the implementation of the iterative Jacobi's method was needed in order to solve the 2D problem with this particular numerical method. For every advancement in time, the program runs the Jacobi method in order to find the gradient at a particular moment in time. We used boundary conditions 0 on all boundaries in the 2 dimensional case for the implicit backward euler method.
 
-* Textfiles and figures can be found in the folder Results.
-
-* The calculations are performed with the energy coefficent J, and boltzmann factor, k, set to 1. With this scaling the critical temperature is approximately 2.269 in the termodynamical limit L -> infinity (infinite number of spins in 2D system). Termodynamical properties are scaled by number of spins (L^2), since the size of the system is an extensive parameter, meaning that the amplitude of energy, magnetic moment etc depends on the size of the LxL spin system. 
+* Textfiles and figures can be found in the folder results.
 
 ### Code: Link and description of programmes
-- [main.cpp](https://github.com/Seedsiz/FYS4150-Project4/blob/main/code-and-results/main.cpp) : Runs the other programmes and provide user options through terminal.
+- [main.cpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/main.cpp) : Runs the other programmes and provide user options through terminal.
 
- - [makefile](https://github.com/Seedsiz/FYS4150-Project4/blob/main/code-and-results/makefile) : Compiles and executes cpp files, and provides plot options of histograms, spin states for variables, expectation values and physical attributes (heath capacity, magnetic susceptibility etc)  
+ - [makefile](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/makefile) : Compiles and executes cpp files, and provides plot options of 1D and 2D solutions, amplifications for the various methods, 2D animation of the temperature gradient.
 
--  [montecarlo.hpp](https://github.com/Seedsiz/FYS4150-Project4/blob/main/code-and-results/montecarlo.hpp) : Headerfile for the superclass MonteCarlo, with subclasses IsingModel2D.
+-  [finitediffs.hpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/finitediffs.hpp) : Headerfile for the superclass Diffusion_Solver for 1 dimension, with subclasses Explicit_Euler and Implicit.
 
-- [montecarlo.cpp](https://github.com/Seedsiz/FYS4150-Project4/blob/main/code-and-results/montecarlo.cpp) : Provides the superclass method draw_acceptance, which draws a random number between [0,1). Is used to initialize the spin matrix S.
-- [isingmodel.cpp](https://github.com/Seedsiz/FYS4150-Project4/blob/main/code-and-results/isingmodel.cpp) : The subclass which attains the expectation values for a 2D spin matrix at equilibrium for a given temperature T. Subclass methods provided are given in following order
-  1. init: Sets up member parameters and vectors, and initializes the flattened spin matrix.
-  2. setup_boltzmann_ratio: Sets up the boltzmann ratio which is used as acceptance criteria for a specific temperature
-  3. magnetic_moment: Get magnetic moment of the initial spin state.
-  4. energy: Get energy of the initial spin state.
-  5. find_deltaE: Find the energy difference between suggested state and present spin configuration. Also gives the boltzmann ratio used in montecarlo sampling.
-  6. metropolis: Accepts all flips with dE < 0. For other dE compare boltzmann ratio with random number [0,1). If boltzmann ratio larger, accept.
-  7. solve: Gives the energies and magnetic moment, and calculates the expectation values of the 2D Isingmodel for a given number of calibration cycles and Monte Carlo simulations. Writes to file.
-  8. The other methods provided are write to file methods.
+- [finitediffs.cpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/finitediffs.cpp) : Provides the superclass method initialize, which initializes the system with number of spatial grid points Nx and number of time simulations Nt. It also defines the horizontal 1D vector x, and vectors for solution to the temperature gradient u(x,t).
 
-- [test.cpp](https://github.com/Seedsiz/FYS4150-Project4/blob/main/code-and-results/test.cpp): Unit tests for a 2 by 2 system with temperature 1. Has headerfile [catch.hpp](https://github.com/Seedsiz/FYS4150-Project4/blob/main/code-and-results/catch.hpp)
+- [explicit_euler.cpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/explicit_euler.cpp) : The subclass which solves the diffusion equation using the explicit forward euler method. Subclass methods provided are given in following order
+  1. init: Sets up member parameters and vectors by calling the superclass method initialize from finitediffs.cpp.
+  2. set_initial: Initializes the solution vector u_n with zero everywhere, except at the boundaries. The boundaries are set to u_n(0) = 0 and u_n(Nx) = 1. 
+  3. advance: Moving the system to a new moment in time and calculates the new solution vector u, except at the boundaries which are fixed during the entire       simulation.
+  4. solve: Advances the system multiple moments in time by calling the method advance Nt times. For every advancement the corresponding solutions are written to file.
+  5. convergence_rate: Finds the convergence rate of the explicit forward euler method.
+  6. The other methods provided are write to file methods.
 
-- [plotcycles.py](https://github.com/Seedsiz/FYS4150-Project4/blob/main/code-and-results/plotcycles.py) plots the expectation values or energy and magnetic momentum values as a function of MC cycles.
-- [plothist.py](https://github.com/Seedsiz/FYS4150-Project4/blob/main/code-and-results/plothist.py) visualizes the energy distribution or energy expectation distribution for a given temperature as histograms.
+- [implicit.cpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/implicit.cpp): The subclass which solves the diffusion equation using both implicit backward euler and implicit Crank-Nicholson methods. Subclass methods provided are given in following order
+  1. init: Sets up member parameters and vectors by calling the superclass method initialize from finitediffs.cpp. In addition, the method also redifines number of spatial grid points and some vectors since the implicit methods only uses the inner points of the system. An option is also made to initialize the system either for backward euler or Crank-Nicholson.
+  2. BN_setup_system: Initializes the tridiagonal matrix vectors and the right hand side of the equation, when applying the backward euler method. 
+  3. CN_setup_system: Initializes the tridiagonal matrix vectors and the right hand side of the equation, when applying the Crank-Nicholson method. 
+  4. forward_substitution: Performing gauss elimination to the matrix equation and update the right hand side of the equation. 
+  5. backward_substitution: main algorithm, finds the solutions u for a given moment in time, by performing backward substitution to the equation.
+  7. advance: Moving the system to a new moment in time and calls the methods forward_substitution and backward_substitution to tolve the new solution vector u.
+  8. solve: Advances the system multiple moments in time by calling the method advance Nt times. For every advancement it sets up the system by calling either BN_setup_system or CN_setup_system depending on the numerical method applied. Numerical solutions are also written to file here.
+  9. The other methods provided are write to file methods.
+
+- [finitediffs2d.hpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/finitediffs2d.hpp) Headerfile for the superclass Diffusion_Solver2D for 2 dimensions, with subclasses Implicit_BE.
+- [finitediffs2d.cpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/finitediffs2d.cpp) 
 - [plotspin.py](https://github.com/Seedsiz/FYS4150-Project4/blob/main/code-and-results/plotspin.py) makes a heatmap of the final spin configuration for a given temperature.
 - [plotexpvalues.py](https://github.com/Seedsiz/FYS4150-Project4/blob/main/code-and-results/plotexpvalues.py) plots the heat capacity, magnetic susceptibility and other parameters of the system.
 - [plottime.py](https://github.com/Seedsiz/FYS4150-Project4/blob/main/code-and-results/plottime.py) makes a plot for different runtime with and without flags/parallelization.
