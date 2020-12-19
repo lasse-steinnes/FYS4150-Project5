@@ -15,6 +15,7 @@ using namespace arma;
 
 double I(double x);
 double I_2D(double x, double y);
+double I_2Dsine(double x, double y);
 
 int main(int argc, char const *argv[]){
   Catch::Session().run();  // testing some numerical cases vs analytical results
@@ -28,14 +29,15 @@ int main(int argc, char const *argv[]){
   cin >> method_solver;
   int dim;
 
+  // Problem parameters 1D
+  double T = 1;
+  double dx = 0.01;
+  double dt = dx*dx/3;
+  int Lx = 1;
+  double u0 = 0;
+  double uN = 1;
+
   if (method_solver == 1){ // Forward Euler
-    double T = 1;
-    double dx = 0.1;
-    //double dt = dx*dx/3;
-    double dt = dx*dx;
-    int Lx = 1;
-    double u0 = 0;
-    double uN = 1;
 
     Explicit_Euler Solver;
     Solver.init(T,dt,Lx,dx,u0,uN);
@@ -44,13 +46,7 @@ int main(int argc, char const *argv[]){
   }
 
   if (method_solver == 2){ // Implicit Euler
-    double T = 1;
-    double dx = 0.1;
-    double dt = dx*dx/3;
-    //double dt = dx*dx;
-    int Lx = 1;
-    double u0 = 0;
-    double uN = 1;
+
     int method = 1;
     Implicit Solver;
     Solver.init(I,T,dt,Lx,dx,u0,uN,method);
@@ -58,24 +54,17 @@ int main(int argc, char const *argv[]){
   }
 
   if (method_solver == 3){ // Crank-Nicolson
-    double T = 1;
-    double dx = 0.1;
-    double dt = dx*dx/3;
-    //double dt = dx*dx;
-    int Lx = 1;
-    double u0 = 0;
-    double uN = 1;
-    int method = 2;
 
+    int method = 2;
     Implicit Solver;
     Solver.init(I,T,dt,Lx,dx,u0,uN,method);
     vec u = Solver.solve();
   }
 
   if (method_solver == 4){ // ImplicitBE in 2D
-    double T = 0.01;
-    double h = 0.1;
-    double dt = h*h/3;
+    double T = 1.0;
+    double h = 0.01;
+    double dt = 0.1;
 
     int Lx = 1;
     int Ly = 1;
@@ -92,7 +81,7 @@ int main(int argc, char const *argv[]){
 
     Implicit_BE Solver;
     Solver.initialize(T,dt,Lx,Ly,h,u0x,uNx,u0y,uNy);
-    Solver.set_initial(I_2D);
+    Solver.set_initial(I_2Dsine);
     vec u = Solver.solve(max_iter,threads);
   }
   return 0;
@@ -105,4 +94,9 @@ double I(double x){ // zero initial conditino
 double I_2D(double x, double y){ // gauss curve initial condition
   // assumes scaled case with x,y in [0,1]
   return 0.75*exp(-((x-0.5)/(0.2)*(x-0.5)/(0.2) + (y - 0.5)/0.2*(y - 0.5)/0.2));
+}
+
+double I_2Dsine(double x, double y){
+  // saving time instead of calling M_PI
+  return 0.75*sin(3.14159265359*x)*sin(3.14159265359*y);
 }

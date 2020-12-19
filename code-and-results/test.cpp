@@ -30,6 +30,7 @@ TEST_CASE("Testing 1D in stationary limit"){
   vec u_FE, u_BE, u_CN; // numerical results
   int method;
 
+  auto old_buffer = cout.rdbuf(nullptr); // provide no cout
   // Forward euler
   Explicit_Euler Solver;
   Solver.init(T,dt,Lx,dx,u0,uN);
@@ -47,6 +48,8 @@ TEST_CASE("Testing 1D in stationary limit"){
   Implicit Solver3;
   Solver3.init(I,T,dt,Lx,dx,u0,uN,method);
   u_CN = Solver3.solve();
+
+  cout.rdbuf(old_buffer);
 
   /* Analytical expression in the stationary limit */
   vec u_ana = linspace<vec>(0,Lx,Nx+1);
@@ -75,7 +78,7 @@ TEST_CASE("Testing 2D in stationary limit"){
         return  0.75*exp(-((x-0.5)/(0.2)*(x-0.5)/(0.2) + (y - 0.5)/0.2*(y - 0.5)/0.2));
       };
 
-  double T = 20;
+  double T = 5;
   double h = 0.1;
   double dt = h*h/3;
 
@@ -96,11 +99,12 @@ TEST_CASE("Testing 2D in stationary limit"){
   int threads = 1;
 
   // solve numerically
+  auto old_buffer = cout.rdbuf(nullptr); // provide no cout
   Implicit_BE Solver;
   Solver.initialize(T,dt,Lx,Ly,h,u0x,uNx,u0y,uNy);
   Solver.set_initial(I_2D);
   vec u_num = Solver.solve(max_iter, threads); // u is a flattened matrix
-
+  cout.rdbuf(old_buffer);
 
   /* Analytical solution in stationary limit */
   vec u_ana = zeros<vec>((Nh+1)*(Nh+1));

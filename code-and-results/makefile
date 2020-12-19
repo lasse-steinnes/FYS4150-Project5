@@ -13,8 +13,8 @@
 #plot2:
 #	python3 plot_amplification.py
 
-#ani:
-#	python3 animation.py
+#time_error:
+#	python3 time_error_analyis.py
 
 ##### Makefile alternative 2 #####
 all: compile execute
@@ -31,5 +31,5 @@ plot:
 plot2:
 	python3 plot_amplification.py
 
-ani:
-	python3 animation.py
+time_error:
+	python3 time_error_analysis.py
