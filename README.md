@@ -2,7 +2,7 @@
 Git for Project 5 in Computational Physics (FYS4150).
 
 ### Main overview
-* The programs in this repository aim at solving the Diffusion equation using three numerical methods, namely Explicit Forward Euler, Implicit Backward Euler and the Crank-Nicholson method. The description for solving the Diffuision equation is described in : [Project 5 - Solving the Diffusion equation ](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/report/Project-description-DiffusionEquation.pdf). The final report can be found at: [Aaby Rashid Steinnes - Project5](https://github.com/Seedsiz/FYS4150-Project4/blob/main/report/Aaby_Steinnes_Rashid_exploring_the_ising_model_report.pdf).
+* The programs in this repository aim at solving the Diffusion equation using three numerical methods, namely Explicit Forward Euler, Implicit Backward Euler and the Crank-Nicholson method. The description for solving the Diffuision equation is described in : [Project 5 - Solving the Diffusion equation ](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/report/Project-description-DiffusionEquation.pdf). The final report can be found at: [Aaby Rashid Steinnes - Project5](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/report/Aaby-I-Rashid-S-Steinnes-L-Investigating-Finite-Difference-Schemes-of-the-Heat-Equation.pdf).
 
 * The main challange is to solve the Diffusion equation both in 1 and 2 dimensions. The intuition of the problem can be thought of as finding the temperature gradient in a rod of length L = 1. For the 1D problem, the goal is to simulate over a significant good amount of time, so that the numerical solutions for the various methods approach a linear variation close to an analytical stationary solution of the problem. When implementing, different approaches to spatial steplength and timestep has been made, in order to study the resolution and stability of the different numerical methods.
 
@@ -43,10 +43,10 @@ Git for Project 5 in Computational Physics (FYS4150).
   2. jacobi_iteration_method: Applying jacobi's algorithm in order to find the new solution vector u for a given moment in time. 
   3. solve: Solving the diffusion equation by calling jacobi_iteration_method Nt times and update the new solution vector u each time. 
   4. The other methods provided are write to file methods.
- 
+ - [test.cpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/plot_amplification.py) tests the 1D and 2D algoritmes for known stationary solutions.
  - [plot_sol.py](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/plot_sol.py) Plots the 1D solutions for all three numerical methods together with the analytical stationary state to compare. The file also plots the 2D solution for the implicit backward euler method.
 - [plot_amplification.py](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/plot_amplification.py) Makes a plot of the amplification factor for all three numerical methods in 1D, along with the amplification factor for the analytical solution in 1D.
-- [test.cpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/plot_amplification.py) testing something
+- [time_error_analysis.py](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/time_error_analysis.py) Investigates and plots the runtime and error for different spatial and temporal resolution (dx and dt) for the 1D case.
 
 
 The files can be compiled with "make all". And plots can be generated with "make argument."
