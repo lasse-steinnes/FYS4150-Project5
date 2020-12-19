@@ -18,7 +18,7 @@ double I_2D(double x, double y);
 double I_2Dsine(double x, double y);
 
 int main(int argc, char const *argv[]){
-  //Catch::Session().run();  // testing some numerical cases vs analytical results
+  Catch::Session().run();  // testing some numerical cases vs analytical results
 
   int method_solver;
   cout << "Press 1 to run explicit Euler \n";
@@ -29,14 +29,15 @@ int main(int argc, char const *argv[]){
   cin >> method_solver;
   int dim;
 
+  // Problem parameters 1D
+  double T = 1;
+  double dx = 0.01;
+  double dt = dx*dx/3;
+  int Lx = 1;
+  double u0 = 0;
+  double uN = 1;
+
   if (method_solver == 1){ // Forward Euler
-    double T = 1;
-    double dx = 0.1;
-    //double dt = dx*dx/3;
-    double dt = dx*dx;
-    int Lx = 1;
-    double u0 = 0;
-    double uN = 1;
 
     Explicit_Euler Solver;
     Solver.init(T,dt,Lx,dx,u0,uN);
@@ -45,13 +46,7 @@ int main(int argc, char const *argv[]){
   }
 
   if (method_solver == 2){ // Implicit Euler
-    double T = 1;
-    double dx = 0.1;
-    double dt = dx*dx/3;
-    //double dt = dx*dx;
-    int Lx = 1;
-    double u0 = 0;
-    double uN = 1;
+
     int method = 1;
     Implicit Solver;
     Solver.init(I,T,dt,Lx,dx,u0,uN,method);
@@ -59,15 +54,8 @@ int main(int argc, char const *argv[]){
   }
 
   if (method_solver == 3){ // Crank-Nicolson
-    double T = 1;
-    double dx = 0.1;
-    double dt = dx*dx/3;
-    //double dt = dx*dx;
-    int Lx = 1;
-    double u0 = 0;
-    double uN = 1;
-    int method = 2;
 
+    int method = 2;
     Implicit Solver;
     Solver.init(I,T,dt,Lx,dx,u0,uN,method);
     vec u = Solver.solve();

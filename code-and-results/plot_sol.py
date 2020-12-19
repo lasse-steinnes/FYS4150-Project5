@@ -53,7 +53,7 @@ if dim == 1:
     plt.legend()
     plt.xticks(fontsize=14)
     plt.yticks(fontsize=14)
-    plt.savefig("./results/figures/FE_BE_CN_t1={:2f}dx={:2f}.png".format(t1,dx))
+    plt.savefig("./results/figures/1d-sol/FE_BE_CN_t1={:2f}dx={:2f}.png".format(t1,dx))
 
 
     plt.figure()
@@ -67,7 +67,7 @@ if dim == 1:
     plt.legend()
     plt.xticks(fontsize=14)
     plt.yticks(fontsize=14)
-    plt.savefig("./results/figures/FE_BE_CN_t2={:2f}dx={:2f}.png".format(t2,dx))
+    plt.savefig("./results/figures/1d-sol/FE_BE_CN_t2={:2f}dx={:2f}.png".format(t2,dx))
 
     plt.show()
 
