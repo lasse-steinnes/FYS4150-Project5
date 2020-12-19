@@ -24,8 +24,7 @@ Git for Project 5 in Computational Physics (FYS4150).
   2. set_initial: Initializes the solution vector u_n with zero everywhere, except at the boundaries. The boundaries are set to u_n(0) = 0 and u_n(Nx) = 1. 
   3. advance: Moving the system to a new moment in time and calculates the new solution vector u, except at the boundaries which are fixed during the entire       simulation.
   4. solve: Advances the system multiple moments in time by calling the method advance Nt times. For every advancement the corresponding solutions are written to file.
-  5. convergence_rate: Finds the convergence rate of the explicit forward euler method.
-  6. The other methods provided are write to file methods.
+  5. The other methods provided are write to file methods.
 
 - [implicit.cpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/implicit.cpp): The subclass which solves the diffusion equation using both implicit backward euler and implicit Crank-Nicholson methods. Subclass methods provided are given in following order
   1. init: Sets up member parameters and vectors by calling the superclass method initialize from finitediffs.cpp. In addition, the method also redifines number of spatial grid points and some vectors since the implicit methods only uses the inner points of the system. An option is also made to initialize the system either for backward euler or Crank-Nicholson.
@@ -47,8 +46,7 @@ Git for Project 5 in Computational Physics (FYS4150).
  
  - [plot_sol.py](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/plot_sol.py) Plots the 1D solutions for all three numerical methods together with the analytical stationary state to compare. The file also plots the 2D solution for the implicit backward euler method.
 - [plot_amplification.py](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/plot_amplification.py) Makes a plot of the amplification factor for all three numerical methods in 1D, along with the amplification factor for the analytical solution in 1D.
-- [time_error_analysis.py](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/time_error_analysis.py) 
-- [test.cpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/plot_amplification.py) Unit test in both the 1D and 2D stationary limit.
+- [test.cpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/plot_amplification.py) testing something
 
 
 The files can be compiled with "make all". And plots can be generated with "make argument."
@@ -56,11 +54,7 @@ The files can be compiled with "make all". And plots can be generated with "make
 How to run the programmes to reproduce the results discussed in the article: The menu provides user input for which numerical method you want to apply in order to solve the diffusion equation. It also asks whether or not you want to run the program for either 1 or 2 dimensions.
 
 ### Links and packages
-- The Mersenne Twister (pseudo)random number generator was used in generating uniform distribution to draw indices and acceptance criteria. Documentation on the class mt19937_64 can be found [here.](https://www.cplusplus.com/reference/random/mt19937_64/)
-
 - Documentation for Matplotlib from python from [here](https://matplotlib.org/)
-
-- Documentation on pandas dataframes can be found [here](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html)
 
 - Documentation on parallelization with OpenMP can be found [here](https://www.openmp.org/wp-content/uploads/OpenMP-4.5-1115-CPP-web.pdf) or for more versions [here](https://www.openmp.org/resources/refguides/)
 
