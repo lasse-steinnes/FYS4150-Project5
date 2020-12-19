@@ -47,7 +47,7 @@ Git for Project 5 in Computational Physics (FYS4150).
  
  - [plot_sol.py](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/plot_sol.py) Plots the 1D solutions for all three numerical methods together with the analytical stationary state to compare. The file also plots the 2D solution for the implicit backward euler method.
 - [plot_amplification.py](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/plot_amplification.py) Makes a plot of the amplification factor for all three numerical methods in 1D, along with the amplification factor for the analytical solution in 1D.
-- [time_error_analysis.py](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/plot_amplification.py) Makes a plot of the amplification factor for all three numerical methods in 1D, along with the amplification factor for the analytical solution in 1D.
+- [time_error_analysis.py](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/time_error_analysis.py) 
 - [test.cpp](https://github.com/lasse-steinnes/FYS4150-Project5/blob/main/code-and-results/plot_amplification.py) Unit test in both the 1D and 2D stationary limit.
 
 
