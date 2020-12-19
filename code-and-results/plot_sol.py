@@ -7,69 +7,121 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 dim = int(input("Want to plot 1D or 2D solution (1/2)?: "))
 
 if dim == 1:
-    Nx = int(input("Set Nx (int):")) # 100
-    Nt =  int(input("Set Nt (int):"))# 3000
-    t2 = 1.0
-    dx = 1/Nx
 
-    infile_FE = open("./results/1D-solutions/" + "1Dsol-Nx-" + str(Nx) + "-Nt-" + str(Nt) +  "-FE.txt", "r")
-    infile_BE = open("./results/1D-solutions/" + "1Dsol-Nx-" + str(Nx) + "-Nt-" + str(Nt) +  "-BE.txt", "r")
-    infile_CN = open("./results/1D-solutions/" + "1Dsol-Nx-" + str(Nx) + "-Nt-" + str(Nt) +  "-CN.txt", "r")
+    stab_crit = str(input("Plot with stability criterion not fullfilled (yes/no)?: "))
+    if stab_crit == 'yes':
+        Nx = int(input("Set Nx (int):")) # 100
+        Nt =  int(input("Set Nt (int):"))# 3000
+        t2 = 0.1
+        dx = 1/Nx
 
-    infile_FE.readline()
-    infile_BE.readline()
-    infile_CN.readline()
+        infile_FE = open("./results/1D-solutions/" + "1Dsol-Nx-" + str(Nx) + "-Nt-" + str(Nt) +  "-FE.txt", "r")
+        infile_BE = open("./results/1D-solutions/" + "1Dsol-Nx-" + str(Nx) + "-Nt-" + str(Nt) +  "-BE.txt", "r")
+        infile_CN = open("./results/1D-solutions/" + "1Dsol-Nx-" + str(Nx) + "-Nt-" + str(Nt) +  "-CN.txt", "r")
 
-    u_FE = np.loadtxt(infile_FE)
-    u_BE = np.loadtxt(infile_BE)
-    u_CN = np.loadtxt(infile_CN)
+        infile_FE.readline()
+        infile_BE.readline()
+        infile_CN.readline()
 
+        u_FE = np.loadtxt(infile_FE)
+        u_BE = np.loadtxt(infile_BE)
+        u_CN = np.loadtxt(infile_CN)
 
-    x = np.linspace(0,1,Nx+1)
-    t_array = np.linspace(0,t2,Nt+1)
-    t1 = t_array[int(Nt/5)]
-    print(t1)
+        x = np.linspace(0,1,Nx+1)
+        t_array = np.linspace(0,t2,Nt+1)
+        t1 = t_array[int(Nt/500)]
+        print(t1)
 
-    def u(x):
-        sum = 0
-        T = 10
-        N = int(1e5)
-        for n in range(1,N):
-            sum += (((-1)**(n))/n)*np.sin(n*np.pi*x)*np.exp(-T*(n*np.pi)**2)
-        uxt = x + (2/np.pi)*sum
-        return uxt
+        def u(x):
+            sum = 0
+            N = int(1e5)
+            for n in range(1,N):
+                sum += (((-1)**(n))/n)*np.sin(n*np.pi*x)*np.exp(-t1*(n*np.pi)**2)
+            uxt = x + (2/np.pi)*sum
+            return uxt
 
-    uxt_an = u(x)
-
-
-    plt.figure()
-    plt.plot(x,u_FE[int(Nt/5),:], label = 'Forward Euler solution at $t_1$')
-    plt.plot(x,u_BE[int(Nt/5),:], label = 'Implicit Backward solution at $t_1$')
-    plt.plot(x,u_CN[int(Nt/5),:], label = 'Crank-Nicholson solution at $t_1$')
-    plt.plot(x,uxt_an, label = 'Analytical solution $u(x,t)$, at t = 10')
-    plt.xlabel('x',fontsize = 13)
-    plt.ylabel('$u(x,t)$',fontsize = 13)
-    plt.title('Numerical solutions at time $t_1 = 0.2$ and $\Delta x$ = 0.01',fontsize = 14)
-    plt.legend()
-    plt.xticks(fontsize=14)
-    plt.yticks(fontsize=14)
-    plt.savefig("./results/figures/FE_BE_CN_t1={:2f}dx={:2f}.png".format(t1,dx))
+        uxt_an = u(x)
 
 
-    plt.figure()
-    plt.plot(x,u_FE[-1,:], label = 'Forward Euler solution at $t_2$')
-    plt.plot(x,u_BE[-1,:], label = 'Implicit Backward solution at $t_2$')
-    plt.plot(x,u_CN[-1,:], label = 'Crank-Nicholson solution at $t_2$')
-    plt.plot(x,uxt_an, label = 'Analytical solution $u(x,t)$, at t = 10')
-    plt.xlabel('x',fontsize = 13)
-    plt.ylabel('$u(x,t)$',fontsize = 13)
-    plt.title('Numerical solutions at time $t_2 = 1.0$ and $\Delta x$ = 0.01',fontsize = 14)
-    plt.legend()
-    plt.xticks(fontsize=14)
-    plt.yticks(fontsize=14)
-    plt.savefig("./results/figures/FE_BE_CN_t2={:2f}dx={:2f}.png".format(t2,dx))
+        plt.plot(x,u_FE[int(Nt/500),:], label = 'Forward Euler solution at $t_1$')
+        plt.plot(x,u_BE[int(Nt/500),:], label = 'Implicit Backward solution at $t_1$')
+        plt.plot(x,u_CN[int(Nt/500),:], label = 'Crank-Nicholson solution at $t_1$')
+        plt.plot(x,uxt_an, label = 'Analytical solution $u(x,t)$, at $t_1$')
+        plt.xlabel('x',fontsize = 13)
+        plt.ylabel('$u(x,t)$',fontsize = 13)
+        plt.title('Forward Euler unstable at $t_1 = 0.0002$ and $\Delta x$ = 0.01',fontsize = 14)
+        plt.legend()
+        plt.xticks(fontsize=14)
+        plt.yticks(fontsize=14)
+        plt.savefig("./results/figures/1d-sol/stab_crit_fail_t={:2f}dx={:2f}.png".format(t1,dx))
 
-    plt.show()
+        plt.show()
+
+
+
+    if stab_crit == 'no':
+        Nx = int(input("Set Nx (int):")) # 100
+        Nt =  int(input("Set Nt (int):"))# 3000
+        t2 = 1.0
+        dx = 1/Nx
+
+        infile_FE = open("./results/1D-solutions/" + "1Dsol-Nx-" + str(Nx) + "-Nt-" + str(Nt) +  "-FE.txt", "r")
+        infile_BE = open("./results/1D-solutions/" + "1Dsol-Nx-" + str(Nx) + "-Nt-" + str(Nt) +  "-BE.txt", "r")
+        infile_CN = open("./results/1D-solutions/" + "1Dsol-Nx-" + str(Nx) + "-Nt-" + str(Nt) +  "-CN.txt", "r")
+
+        infile_FE.readline()
+        infile_BE.readline()
+        infile_CN.readline()
+
+        u_FE = np.loadtxt(infile_FE)
+        u_BE = np.loadtxt(infile_BE)
+        u_CN = np.loadtxt(infile_CN)
+
+        x = np.linspace(0,1,Nx+1)
+        t_array = np.linspace(0,t2,Nt+1)
+        t1 = t_array[int(Nt/5)]
+
+        def u(x):
+            sum = 0
+            T = 10
+            N = int(1e5)
+            for n in range(1,N):
+                sum += (((-1)**(n))/n)*np.sin(n*np.pi*x)*np.exp(-T*(n*np.pi)**2)
+            uxt = x + (2/np.pi)*sum
+            return uxt
+
+        uxt_an = u(x)
+
+        plt.figure()
+        plt.plot(x,u_FE[int(Nt/5),:], label = 'Forward Euler solution at $t_1$')
+        plt.plot(x,u_BE[int(Nt/5),:], label = 'Implicit Backward solution at $t_1$')
+        plt.plot(x,u_CN[int(Nt/5),:], label = 'Crank-Nicholson solution at $t_1$')
+        plt.plot(x,uxt_an, label = 'Analytical solution $u(x,t)$, at t = 10')
+        plt.xlabel('x',fontsize = 13)
+        plt.ylabel('$u(x,t)$',fontsize = 13)
+        plt.title('Numerical solutions at time $t_1 = 0.2$ and $\Delta x$ = 0.01',fontsize = 14)
+        plt.legend()
+        plt.xticks(fontsize=14)
+        plt.yticks(fontsize=14)
+        plt.savefig("./results/figures/1d-sol/FE_BE_CN_t1={:2f}dx={:2f}.png".format(t1,dx))
+
+
+        plt.figure()
+        plt.plot(x,u_FE[-1,:], label = 'Forward Euler solution at $t_2$')
+        plt.plot(x,u_BE[-1,:], label = 'Implicit Backward solution at $t_2$')
+        plt.plot(x,u_CN[-1,:], label = 'Crank-Nicholson solution at $t_2$')
+        plt.plot(x,uxt_an, label = 'Analytical solution $u(x,t)$, at t = 10')
+        plt.xlabel('x',fontsize = 13)
+        plt.ylabel('$u(x,t)$',fontsize = 13)
+        plt.title('Numerical solutions at time $t_2 = 1.0$ and $\Delta x$ = 0.01',fontsize = 14)
+        plt.legend()
+        plt.xticks(fontsize=14)
+        plt.yticks(fontsize=14)
+        plt.savefig("./results/figures/1d-sol/FE_BE_CN_t2={:2f}dx={:2f}.png".format(t2,dx))
+
+        plt.show()
+
+
 
 if dim == 2:
     # make a 2D plot
